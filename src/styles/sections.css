@@ -4,7 +4,7 @@
 .section-head p:not(.eyebrow) { font-size: 1.1rem; color: var(--muted); }
 
 .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.card { background: var(--card-bg); color: var(--card-ink); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+.card { background: #121214; color: #f4f4f5; border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
 .card img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
 .card-body { padding: 18px 20px 22px; display: grid; gap: 8px; flex: 1; align-content: start; }
 .card h3 { font-size: 1.35rem; }

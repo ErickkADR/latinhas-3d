@@ -10,10 +10,7 @@ import { addTick, startLoop, pause, resume } from './modules/loop.js';
 import { initPointer, pointer } from './modules/pointer.js';
 import { fontsReady } from './modules/textures.js';
 import { createCan } from './modules/can.js';
-import { createElements } from './modules/elements.js';
 import { createThemeSwitcher } from './modules/theme-switch.js';
-import { createBubbles } from './modules/bubbles.js';
-import { initCustomizer } from './modules/customizer.js';
 
 const idle = (fn, timeout = 1500) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout }) : setTimeout(fn, 200));
 
@@ -31,35 +28,13 @@ export async function startScene({ ui, initial }) {
     labelSize: device === 'mobile' ? SETTINGS.label.mobile : SETTINGS.label.desktop,
     reducedMotion,
   });
-  const elements = createElements(document.querySelector('[data-floats]'), {
-    count: SETTINGS.elements[device],
-    size: SETTINGS.elementSize[device],
-    base: MODELS_BASE,
-    mobile: device === 'mobile',
-  });
-  const bubbles = createBubbles(document.querySelector('[data-bubbles]'), { count: reducedMotion ? 0 : SETTINGS.bubbles[device === 'desktop' ? 'desktop' : 'mobile'] });
-  const switcher = createThemeSwitcher({ can, elements, ui, reducedMotion });
-  const customizer = initCustomizer({ switcher, can, elements, onSelectCustom: () => ui.setActive('custom') });
-
-  // ---- medidas: lidas só quando o tamanho muda (ResizeObserver) ou no scroll, nunca no loop ----
-  const box = { width: 0, height: 0, left: 0, docTop: 0 };
-  const originY = () => (device === 'mobile' || window.innerWidth <= 860 ? 0.58 : 0.52);
-  const push = () => elements.measure({ ...box, top: box.docTop - window.scrollY, originY: originY() });
-  new ResizeObserver(() => {
-    const r = hero.getBoundingClientRect();
-    Object.assign(box, { width: r.width, height: r.height, left: r.left, docTop: r.top + window.scrollY });
-    bubbles.resize(r.width, r.height);
-    push();
-  }).observe(hero);
-  window.addEventListener('scroll', push, { passive: true });
+  const switcher = createThemeSwitcher({ can, ui, reducedMotion });
 
   // herói fora da tela = loop parado (nada de renderizar 3D que ninguém vê)
   new IntersectionObserver(([e]) => (e.isIntersecting ? resume('offscreen') : pause('offscreen'))).observe(hero);
 
   addTick((dt, now) => {
-    bubbles.tick(dt, now);
     can.tick(dt, now);
-    elements.tick(dt, now);
   });
 
   const byId = (id) => THEMES.find((t) => t.id === id) ?? THEMES[0];
@@ -71,20 +46,12 @@ export async function startScene({ ui, initial }) {
   can.el.dismissPoster();
   startLoop();
 
-  // carregamento escalonado: elementos um por vez, depois o resto no ocioso
-  idle(async () => {
-    await elements.loadStaggered(first.element, shot ? 0 : SETTINGS.stagger);
-    idle(() => {
-      const others = [...new Set(THEMES.map((t) => t.element).concat('star'))].filter((m) => m !== first.element);
-      for (const m of others) fetch(`${MODELS_BASE}${m}.glb`, { priority: 'low' }).catch(() => {});
-      THEMES.filter((t) => t !== first).forEach((t, i) => setTimeout(() => can.textureFor(t), 400 * (i + 1)));
-    });
-  });
+  // no ocioso: as estampas dos outros temas, para a troca no pico do giro ser instantânea
+  idle(() => THEMES.filter((t) => t !== first).forEach((t, i) => setTimeout(() => can.textureFor(t), 400 * (i + 1))));
 
   return {
     handle(action) {
       if (action.type === 'theme') switcher.go(byId(action.id));
-      if (action.type === 'studio') customizer.open(action.trigger);
     },
   };
 }

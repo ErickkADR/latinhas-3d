@@ -220,7 +220,7 @@ function star() {
 
 await mkdir(OUT, { recursive: true });
 const io = new NodeIO();
-const all = { can: await buildCan(), lemon: lemonSlice(), cherry: cherry(), blueberry: blueberry(), mint: mintLeaf(), star: star() };
+const all = { can: await buildCan() };
 for (const [name, doc] of Object.entries(all)) {
   const file = new URL(`${name}.glb`, OUT);
   await io.write(file.pathname, doc);

@@ -13,18 +13,14 @@ const early = [];
 let scene = null;
 const send = (action) => (scene ? scene.handle(action) : early.push(action));
 
-ui.onPick((id, btn) => {
+ui.onPick((id) => {
   ui.setActive(id);
-  send(id === 'custom' ? { type: 'studio', trigger: btn } : { type: 'theme', id });
+  send({ type: 'theme', id });
 });
 ui.onCard((id) => {
   ui.setActive(id);
   document.getElementById('topo').scrollIntoView({ behavior: 'smooth' });
   send({ type: 'theme', id });
-});
-document.addEventListener('click', (e) => {
-  const t = e.target.closest('[data-open-studio]');
-  if (t && !scene) early.push({ type: 'studio', trigger: t });
 });
 
 function boot() {

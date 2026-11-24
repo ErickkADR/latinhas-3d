@@ -1,6 +1,6 @@
 # latinhas-3d — CLAUDE.md
 
-Landing 3D de latinhas personalizadas (marca fictícia "Latinha"). Projeto **pessoal** do Erick, conta pessoal em tudo:
+Landing 3D de latinhas (marca fictícia "Latinha"). Projeto **pessoal** do Erick, conta pessoal em tudo:
 GitHub `ErickkADR/latinhas-3d`, Vercel (conta `erickkadr`), produção https://latinhas-3d.vercel.app.
 Estudo de portfólio: o README é a vitrine (decisões + números antes/depois). Ler o README antes de mexer.
 
@@ -34,3 +34,9 @@ Estudo de portfólio: o README é a vitrine (decisões + números antes/depois).
 - Peças torneadas (LatheGeometry) têm a costura em +Z, de frente para a câmera: o gerador gira 180°.
 - Escrever só `transform` não invalida layout no Chrome; a métrica certa para o "reflow" do loop é `RecalcStyleCount`.
 - `ScriptDuration` do CDP não mostra o custo do model-viewer; usar `npm run measure:profile`.
+
+## v2 (24/11/2026, pedido do Erick)
+- Fundo **sempre o mesmo preto** (`--bg: #0a0a0b`), igual ao `copos-laser`, sem troca de cor por tema. Sem elementos 3D flutuantes, sem bolhas, sem estúdio
+  "Sua lata": a única opção é a arte (o tema). Os módulos `elements.js`, `bubbles.js`, `customizer.js` e os modelos de fruta/estrela foram removidos (histórico do git tem tudo).
+- O README e as seções acima deste bloco que falam de elementos, bolhas, estúdio e `bg` por tema descrevem a v0/v1.
+- Hero com `height: 100vh` exato (sem altura mínima). Nenhuma marca real de bebida em nada.

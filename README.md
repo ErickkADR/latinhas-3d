@@ -1,8 +1,8 @@
 # Latinha · latas 3D personalizadas
 
-Landing page 3D de uma marca fictícia de **latinhas personalizadas**. A lata gira, inclina em direção ao cursor e recebe a estampa
-que você escolher: um dos quatro temas prontos ou a sua própria lata, com a sua arte, o seu nome e a sua cor. A estampa é desenhada
-na hora num `<canvas>` e aplicada como textura no modelo 3D.
+Landing page 3D de uma marca fictícia de **latinhas**. A lata gira, inclina em direção ao cursor e troca de tema com uma coreografia: o giro
+de 720° com motion blur e a estampa trocando no pico dele. A estampa é desenhada na hora num `<canvas>` e aplicada como textura no modelo 3D.
+O fundo é sempre o mesmo preto, sem elementos flutuantes, bolhas nem painel de personalização: a única opção é a arte (o tema).
 
 **No ar:** https://latinhas-3d.vercel.app
 
@@ -14,18 +14,16 @@ justificada por um número medido antes e depois.
 
 ## O que a página faz
 
-- **Lata 3D com `<model-viewer>`** (three.js por baixo) que inclina em direção ao ponteiro em tempo real. Sem mouse (celular),
-  ela passeia sozinha numa curva lenta e o dedo assume enquanto toca a tela.
-- **Elementos 3D em volta** (fatias de limão, cerejas, mirtilos, folhas de menta, estrelas) com parallax de profundidade e um
-  **campo de repulsão** que os afasta do ponteiro.
-- **Troca de tema coreografada com GSAP**: um círculo da cor nova abre a partir da lata, a lata gira 720° com **motion blur**
-  (filtro SVG horizontal proporcional à velocidade angular) e a estampa troca **no pico do giro**; ao mesmo tempo os elementos
-  **implodem para dentro da lata, trocam de modelo e explodem** para posições novas.
-- **Estúdio "Sua lata"**: nome, cor (8 amostras + seletor livre), envio de imagem (PNG/JPG/WebP, nunca sai do navegador) e dois
-  layouts (selo redondo ou arte inteira). Cada mudança redesenha a estampa e aplica na lata na hora; "Baixar a estampa" gera o PNG
-  4096×2048 pronto para virar rótulo.
-- **Responsivo de verdade**: no celular o layout se reorganiza, o menu é próprio (painel em tela cheia, foco preso, Esc fecha),
-  o estúdio vira uma folha inferior e a cena usa **4 elementos 3D em vez de 9**, estampa em 1024 px em vez de 2048 e menos bolhas.
+- **Lata 3D com `<model-viewer>`** (three.js por baixo) que inclina em direção ao ponteiro em tempo real. Sem mouse (celular), ela passeia sozinha numa curva lenta e o dedo assume enquanto toca a tela.
+- **Troca de tema coreografada com GSAP**: a lata gira 720° com **motion blur** (filtro SVG horizontal proporcional à velocidade angular), o nome do tema sai e volta e a
+  estampa troca **no pico do giro**.
+- **Quatro temas** (Limão, Cereja, Mirtilo, Menta), escolhidos num seletor acessível (`radiogroup` com setas) ou nos cards.
+- **Responsivo de verdade**: no celular o layout se reorganiza, o menu é próprio (painel em tela cheia, foco preso, Esc fecha) e a estampa usa 1024 px em vez de 2048.
+
+> **v2 (24/11/2026):** a página perdeu os elementos 3D flutuantes (frutas/estrelas), as bolhas, o fundo que mudava de cor por tema e o estúdio "Sua lata"
+> (nome, cor, envio de imagem). O que sobrou é a lata e a troca de arte. As seções "estúdio", "elementos" e "bolhas" abaixo descrevem a v0/v1 e continuam no histórico do git.
+> Números da v2 (mediana de 3, Lighthouse 13.6): celular **97 · 100 · 100 · 100** (TBT 197 ms, 0,53 MB), desktop **100 · 100 · 100 · 100** (0,48 MB); com o mouse
+> mexendo, **4 recálculos de estilo/s** e **9,4%** da thread principal no desktop (8,9% no celular). Só `can.glb` (91 KB) vai para a rede.
 
 ## Como rodar
 

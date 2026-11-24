@@ -2,21 +2,9 @@
   position: relative; isolation: isolate; overflow: hidden;
   height: 100vh; height: 100svh; color: var(--ink); transition: color 0.5s;
 }
-.hero-bg { position: absolute; inset: 0; z-index: -2; background: var(--bg); transition: background-color 0.6s; }
-.hero-reveal { position: absolute; inset: 0; opacity: 0; will-change: clip-path; }
-.bubbles { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.8; }
+.hero-bg { position: absolute; inset: 0; z-index: -2; background: radial-gradient(ellipse at 50% 55%, #1a1b1f 0%, var(--bg) 62%); }
 
-.hero-word {
-  position: absolute; left: 50%; top: 50%; z-index: -1; transform: translate(-50%, -50%);
-  font-size: clamp(6rem, 25vw, 26rem); font-weight: 800; line-height: 0.8; letter-spacing: -0.06em;
-  text-transform: uppercase; white-space: nowrap; color: transparent;
-  -webkit-text-stroke: 2px color-mix(in srgb, var(--ink) 22%, transparent);
-  user-select: none; pointer-events: none;
-}
 
-.floats { position: absolute; left: 50%; top: 52%; width: 0; height: 0; pointer-events: none; }
-.float { position: absolute; left: 0; top: 0; will-change: transform; }
-.float model-viewer { display: block; pointer-events: none; }
 
 .can-stage {
   position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; pointer-events: none;
@@ -43,20 +31,12 @@
   transition: opacity 0.3s, transform 0.4s var(--ease-out);
 }
 .pick {
-  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 4px 6px 4px 16px;
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 4px 18px;
   border: 2px solid transparent; border-radius: 999px; background: none; cursor: pointer; font-weight: 700;
   transition: border-color 0.3s, background-color 0.3s;
 }
-.pick-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--ink); flex: none; }
 .pick:hover { border-color: color-mix(in srgb, var(--ink) 30%, transparent); }
 .pick[aria-checked='true'] { border-color: var(--ink); background: color-mix(in srgb, var(--ink) 8%, transparent); }
-
-/* estúdio aberto: a lata abre espaço para o painel */
-body.studio-open .picker, body.studio-open .flavor { opacity: 0; pointer-events: none; }
-@media (min-width: 861px) {
-  body.studio-open .can-stage { transform: translateX(-14vw); }
-  body.studio-open .hero-copy { opacity: 0; pointer-events: none; }
-}
 
 @media (max-width: 860px) {
   .hero { height: 100vh; height: 100svh; }
@@ -71,24 +51,18 @@ body.studio-open .picker, body.studio-open .flavor { opacity: 0; pointer-events:
   .hero-actions .btn { min-height: 44px; padding: 0 18px; }
   .can-stage { top: 30%; bottom: 120px; }
   .can { width: 70vw; height: 100%; }
-  .floats { top: 58%; }
   .flavor { left: var(--gutter); right: var(--gutter); top: auto; bottom: 74px; text-align: center; max-width: none; }
   .flavor-name { font-size: 1.25rem; }
   .flavor-tagline { display: none; }
   .picker {
-    left: 0; right: 0; bottom: 14px; flex-direction: row; justify-content: center; gap: 4px; flex-wrap: nowrap;
+    left: 0; right: 0; bottom: 14px; flex-direction: row; justify-content: safe center; gap: 4px; flex-wrap: nowrap;
     overflow-x: auto; padding: 0 var(--gutter); scrollbar-width: none;
   }
   .pick { padding: 4px; }
   .pick-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .pick-dot { width: 34px; height: 34px; }
-  body.studio-open .can-stage { top: var(--header-h); bottom: 52svh; }
-  body.studio-open .floats { top: 26svh; }
-  body.studio-open .hero-copy { opacity: 0; }
 }
 
 /* modo de captura dos cards (?shot=tema) */
-body.is-shot .site-header, body.is-shot .hero-copy, body.is-shot .flavor, body.is-shot .picker, body.is-shot .bubbles, body.is-shot .hero-word { display: none; }
+body.is-shot .site-header, body.is-shot .hero-copy, body.is-shot .flavor, body.is-shot .picker { display: none; }
 body.is-shot .can { width: 80vw; height: 86vh; }
 body.is-shot .can-stage { inset: 0; transform: none; }
-body.is-shot .floats { top: 50%; }

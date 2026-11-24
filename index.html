@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Latinha · latas 3D personalizadas com a sua arte</title>
-    <meta name="description" content="Monte a sua latinha personalizada em 3D: escolha um tema pronto ou envie a sua arte, escreva um nome, escolha a cor e veja a lata girar com a estampa na hora." />
-    <meta name="theme-color" content="#ffd84d" />
+    <meta name="description" content="Latinhas 3D com a estampa que você escolher: veja a lata girar e trocar de tema na hora." />
+    <meta name="theme-color" content="#0a0a0b" />
     <link rel="canonical" href="https://latinhas-3d.vercel.app/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Latinha · latas 3D personalizadas" />
-    <meta property="og:description" content="Escolha um tema ou envie a sua arte e veja a sua lata em 3D na hora." />
+    <meta property="og:description" content="Escolha um tema e veja a lata em 3D na hora." />
     <meta property="og:image" content="https://latinhas-3d.vercel.app/img/og.jpg" />
     <meta property="og:locale" content="pt_BR" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -32,7 +32,6 @@
           <li><a href="#bastidores">Bastidores</a></li>
         </ul>
       </nav>
-      <button class="btn btn--solid header-cta" type="button" data-open-studio>Personalizar</button>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-mobile" data-menu-toggle>
         <span class="menu-toggle-bars" aria-hidden="true"></span>
         <span class="sr-only">Abrir menu</span>
@@ -46,16 +45,12 @@
           <li><a href="#como-funciona" data-menu-link>Como funciona</a></li>
           <li><a href="#bastidores" data-menu-link>Bastidores</a></li>
         </ul>
-        <button class="btn btn--solid" type="button" data-open-studio data-menu-link>Personalizar a minha lata</button>
       </nav>
     </div>
 
     <main id="conteudo">
       <section class="hero" id="topo" aria-labelledby="hero-title" data-hero>
-        <div class="hero-bg" aria-hidden="true"><div class="hero-reveal" data-reveal></div></div>
-        <canvas class="bubbles" aria-hidden="true" data-bubbles></canvas>
-        <p class="hero-word" aria-hidden="true" data-hero-word>Limão</p>
-        <div class="floats" aria-hidden="true" data-floats></div>
+        <div class="hero-bg" aria-hidden="true"></div>
 
         <div class="can-stage">
           <model-viewer
@@ -80,67 +75,24 @@
         <div class="hero-copy">
           <p class="eyebrow">Latas personalizadas</p>
           <h1 id="hero-title">Sua lata, <br />sua estampa.</h1>
-          <p class="hero-lede">Escolha um tema pronto ou envie a sua arte. A estampa é gerada na hora e aplicada na lata 3D.</p>
+          <p class="hero-lede">Escolha o tema e veja a estampa na lata 3D. Ela é gerada na hora, num canvas.</p>
           <div class="hero-actions">
-            <button class="btn btn--solid" type="button" data-open-studio>Criar a minha</button>
-            <a class="btn btn--ghost" href="#temas">Ver temas</a>
+            <a class="btn btn--solid" href="#temas">Ver temas</a>
           </div>
         </div>
 
         <div class="flavor" aria-live="polite">
           <p class="flavor-name" data-flavor-name>Limão Siciliano</p>
-          <p class="flavor-tagline" data-flavor-tagline>Cítrico, gelado e sem açúcar.</p>
         </div>
 
         <div class="picker" role="radiogroup" aria-label="Tema da lata" data-picker></div>
       </section>
 
-      <aside class="studio" id="estudio" role="dialog" aria-modal="false" aria-labelledby="studio-title" hidden data-studio>
-        <div class="studio-head">
-          <h2 id="studio-title">Estúdio da sua lata</h2>
-          <button class="icon-btn" type="button" aria-label="Fechar estúdio" data-close-studio>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-          </button>
-        </div>
-        <form class="studio-form" data-studio-form>
-          <label class="field">
-            <span class="field-label">Nome na lata</span>
-            <input type="text" name="text" maxlength="18" autocomplete="off" value="Seu nome" data-field-text />
-          </label>
-          <fieldset class="field">
-            <legend class="field-label">Cor</legend>
-            <div class="swatches" data-swatches></div>
-          </fieldset>
-          <div class="field">
-            <span class="field-label" id="arte-label">Sua arte (opcional)</span>
-            <div class="upload">
-              <label class="btn btn--line upload-btn">
-                <input class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" aria-labelledby="arte-label" data-field-image />
-                <span>Enviar imagem</span>
-              </label>
-              <button class="btn btn--text" type="button" hidden data-clear-image>Remover arte</button>
-            </div>
-            <p class="field-hint" data-image-hint>PNG, JPG ou WebP. A imagem não sai do seu navegador.</p>
-          </div>
-          <fieldset class="field">
-            <legend class="field-label">Layout</legend>
-            <div class="segmented">
-              <label><input type="radio" name="layout" value="classic" checked /><span>Clássico</span></label>
-              <label><input type="radio" name="layout" value="full" /><span>Arte inteira</span></label>
-            </div>
-          </fieldset>
-          <div class="studio-actions">
-            <button class="btn btn--solid" type="submit">Girar a lata</button>
-            <button class="btn btn--line" type="button" data-download-label>Baixar a estampa</button>
-          </div>
-        </form>
-      </aside>
-
       <section class="section themes" id="temas" aria-labelledby="temas-title">
         <div class="section-head">
           <p class="eyebrow">Temas prontos</p>
           <h2 id="temas-title">Quatro estampas para começar</h2>
-          <p>Cada tema tem a própria cor, padrão e elementos 3D. Todos podem receber o seu nome.</p>
+          <p>Cada tema tem a própria cor e padrão, desenhados na hora num canvas.</p>
         </div>
         <ul class="cards" data-cards></ul>
       </section>
@@ -148,14 +100,13 @@
       <section class="section how" id="como-funciona" aria-labelledby="como-title">
         <div class="section-head">
           <p class="eyebrow">Como funciona</p>
-          <h2 id="como-title">Da sua ideia para a lata em três passos</h2>
+          <h2 id="como-title">Do tema à lata em três passos</h2>
         </div>
         <ol class="steps">
-          <li><span class="step-n" aria-hidden="true">1</span><h3>Escolha a base</h3><p>Comece por um tema pronto ou pela cor que você quiser.</p></li>
-          <li><span class="step-n" aria-hidden="true">2</span><h3>Coloque a sua cara</h3><p>Envie uma arte, escreva um nome. A estampa é desenhada num canvas e vai direto para a lata 3D.</p></li>
-          <li><span class="step-n" aria-hidden="true">3</span><h3>Baixe a estampa</h3><p>A arte sai no tamanho da lata, pronta para virar rótulo ou impressão.</p></li>
+          <li><span class="step-n" aria-hidden="true">1</span><h3>Escolha o tema</h3><p>Quatro estampas prontas, cada uma com cor e padrão próprios.</p></li>
+          <li><span class="step-n" aria-hidden="true">2</span><h3>A estampa nasce no canvas</h3><p>Nada de imagem de textura para baixar: ela é desenhada na hora e vai direto para a lata 3D.</p></li>
+          <li><span class="step-n" aria-hidden="true">3</span><h3>Gire e compare</h3><p>A troca de tema gira a lata 720° e muda a estampa no pico do giro.</p></li>
         </ol>
-        <button class="btn btn--solid" type="button" data-open-studio>Abrir o estúdio</button>
       </section>
 
       <section class="section backstage" id="bastidores" aria-labelledby="bastidores-title">
