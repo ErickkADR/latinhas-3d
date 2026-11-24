@@ -2,6 +2,6 @@
 
 | | Performance | Acessibilidade | Boas Práticas | SEO | FCP | LCP | TBT | CLS | Peso | Requisições |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Celular | 97 | 100 | 100 | 100 | 0.9 s | 0.9 s | 197 ms | 0.000 | 0.53 MB | 20 |
-| Desktop | 100 | 100 | 100 | 100 | 0.3 s | 0.3 s | 2 ms | 0.000 | 0.48 MB | 20 |
+| Celular | 96 | 100 | 100 | 100 | 0.8 s | 0.8 s | 220 ms | 0.000 | 0.53 MB | 21 |
+| Desktop | 100 | 100 | 100 | 100 | 0.3 s | 0.3 s | 0 ms | 0.000 | 0.49 MB | 21 |
 

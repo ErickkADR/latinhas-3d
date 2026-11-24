@@ -1,7 +1,7 @@
 | Imagem | PNG original (2x) | WebP 480 | WebP 960 |
 |---|---:|---:|---:|
-| card-cereja | 1149.9 KB | 7.9 KB | 18.2 KB |
-| card-limao | 1220.3 KB | 8.5 KB | 19.6 KB |
-| card-menta | 1259.0 KB | 7.6 KB | 17.9 KB |
-| card-mirtilo | 1302.9 KB | 10.2 KB | 22.9 KB |
-| og (compartilhamento) | 256.6 KB | 35.0 KB (JPG 1200) | |
+| card-cereja | 767.3 KB | 8.3 KB | 18.6 KB |
+| card-limao | 832.3 KB | 8.8 KB | 20.1 KB |
+| card-menta | 867.3 KB | 7.8 KB | 18.5 KB |
+| card-mirtilo | 911.9 KB | 10.5 KB | 23.7 KB |
+| og (compartilhamento) | 143.8 KB | 38.0 KB (JPG 1200) | |

@@ -2,7 +2,9 @@
   position: relative; isolation: isolate; overflow: hidden;
   height: 100vh; height: 100svh; color: var(--ink); transition: color 0.5s;
 }
-.hero-bg { position: absolute; inset: 0; z-index: -2; background: radial-gradient(ellipse at 50% 55%, #1a1b1f 0%, var(--bg) 62%); }
+/* fundo único dos dois projetos: parede escura de estúdio (com brilho no chão) */
+.hero-bg { position: absolute; inset: 0; z-index: -2; background: var(--bg); }
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
 
 
 

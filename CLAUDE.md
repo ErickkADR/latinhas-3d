@@ -40,3 +40,4 @@ Estudo de portfólio: o README é a vitrine (decisões + números antes/depois).
   "Sua lata": a única opção é a arte (o tema). Os módulos `elements.js`, `bubbles.js`, `customizer.js` e os modelos de fruta/estrela foram removidos (histórico do git tem tudo).
 - O README e as seções acima deste bloco que falam de elementos, bolhas, estúdio e `bg` por tema descrevem a v0/v1.
 - Hero com `height: 100vh` exato (sem altura mínima). Nenhuma marca real de bebida em nada.
+- Fundo do herói: `public/img/bg-960.webp` e `bg-1920.webp` (parede escura de estúdio) num `<img>` com `srcset`; mesmo arquivo do `copos-laser`.
