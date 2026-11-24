@@ -112,6 +112,9 @@ repulsão perguntando ao DOM onde cada elemento está (`getBoundingClientRect` p
 | Desktop, antes | 98 | 100 | 100 | 100 | 0,7 s | 0,7 s | 28 ms | 11,86 MB |
 | **Desktop, depois** | **100** | **100** | **100** | **100** | **0,2 s** | **0,2 s** | **0 ms** | **0,59 MB** |
 
+Em produção (https://latinhas-3d.vercel.app, Vercel com compressão e cache), mesma mediana de 3: **celular 100 · 100 · 100 · 100**
+(FCP/LCP 0,8 s, TBT 52 ms, 0,58 MB) e **desktop 100 · 100 · 100 · 100** (LCP 0,3 s, TBT 0 ms, 0,53 MB).
+
 Honestidade sobre o TBT: parte da queda vem de o 3D ser importado depois do `load`, o que tira o parse do model-viewer da janela
 que o Lighthouse mede. O custo continua existindo, só não bloqueia a primeira pintura nem a interação com o texto. O que mede o
 3D de verdade é a tabela de execução abaixo.
