@@ -10,3 +10,4 @@ public/img-raw/
 reports/*.json
 reports/traces/
 referencia-post.png
+.vercel
