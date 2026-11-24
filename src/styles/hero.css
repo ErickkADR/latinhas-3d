@@ -1,6 +1,6 @@
 .hero {
   position: relative; isolation: isolate; overflow: hidden;
-  min-height: max(640px, 100svh); color: var(--ink); transition: color 0.5s;
+  height: 100vh; height: 100svh; color: var(--ink); transition: color 0.5s;
 }
 .hero-bg { position: absolute; inset: 0; z-index: -2; background: var(--bg); transition: background-color 0.6s; }
 .hero-reveal { position: absolute; inset: 0; opacity: 0; will-change: clip-path; }
@@ -59,7 +59,7 @@ body.studio-open .picker, body.studio-open .flavor { opacity: 0; pointer-events:
 }
 
 @media (max-width: 860px) {
-  .hero { min-height: max(600px, 100svh); }
+  .hero { height: 100vh; height: 100svh; }
   .hero-copy {
     left: var(--gutter); right: var(--gutter); top: calc(var(--header-h) + 4px); bottom: auto; max-width: none; text-align: center;
   }
