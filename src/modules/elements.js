@@ -20,7 +20,7 @@ function layout(count, seedText, mobile) {
   const offset = r() * Math.PI * 2;
   for (let i = 0; i < count; i++) {
     const a = offset + (i / count) * Math.PI * 2 + (r() - 0.5) * 0.5;
-    const rx = mobile ? 0.36 + r() * 0.1 : 0.2 + r() * 0.2;
+    const rx = mobile ? 0.36 + r() * 0.1 : 0.18 + r() * 0.16;
     const ry = mobile ? 0.26 + r() * 0.1 : 0.26 + r() * 0.16;
     out.push({
       x: Math.cos(a) * rx,
@@ -95,10 +95,12 @@ export function createElements(container, { count, size, base, mobile }) {
   async function loadStaggered(name, gap) {
     model = name;
     const url = `${base}${name}.glb`;
+    const loads = [];
     for (const it of items) {
-      await new Promise((r) => setTimeout(r, gap));
-      loadOne(it, url);
+      if (gap) await new Promise((r) => setTimeout(r, gap));
+      loads.push(loadOne(it, url));
     }
+    return Promise.all(loads);
   }
 
   function setTint(hex) {
@@ -106,11 +108,12 @@ export function createElements(container, { count, size, base, mobile }) {
     for (const it of items) applyTint(it);
   }
 
-  function measure(rect) {
-    metrics.w = rect.width;
-    metrics.h = rect.height;
-    metrics.cx = rect.left + rect.width / 2;
-    metrics.cy = rect.top + rect.height / 2;
+  // chamado pelo ResizeObserver/scroll da cena, nunca dentro do tick. originY = onde fica o container dos elementos (0..1 da altura)
+  function measure({ width, height, left, top, originY = 0.52 }) {
+    metrics.w = width;
+    metrics.h = height;
+    metrics.cx = left + width / 2;
+    metrics.cy = top + height * originY;
   }
 
   function tick(dt, now) {
@@ -128,12 +131,11 @@ export function createElements(container, { count, size, base, mobile }) {
       const x = (h.x * metrics.w + px) * spread;
       const y = (h.y * metrics.h + py + bob) * spread;
 
-      // campo de repulsão (v0: pergunta ao DOM onde o elemento está)
+      // campo de repulsão: posição de tela calculada a partir do estado, sem ler o DOM
       let tx = 0, ty = 0;
-      const rect = it.wrap.getBoundingClientRect();
       if (pointer.active && spread > 0.5) {
-        const dx = rect.left + rect.width / 2 - pointer.x;
-        const dy = rect.top + rect.height / 2 - pointer.y;
+        const dx = metrics.cx + x + it.ox - pointer.x;
+        const dy = metrics.cy + y + it.oy - pointer.y;
         const d = Math.hypot(dx, dy) || 1;
         if (d < radius) {
           const f = (1 - d / radius) ** 2 * strength;

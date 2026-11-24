@@ -12,7 +12,7 @@ for (const [form, vp] of [['desktop', { width: 1440, height: 900 }], ['mobile', 
   const cdp = await p.context().newCDPSession(p);
   await cdp.send('Performance.enable');
   await p.goto(url, { waitUntil: 'networkidle' });
-  await p.waitForTimeout(5000);
+  await p.waitForTimeout(+(process.env.WAIT ?? 10000));
   const get = async () => Object.fromEntries((await cdp.send('Performance.getMetrics')).metrics.map((m) => [m.name, m.value]));
   await p.evaluate(() => { window.__frames = 0; const f = () => { window.__frames++; requestAnimationFrame(f); }; requestAnimationFrame(f); });
   const a = await get();
@@ -29,6 +29,7 @@ for (const [form, vp] of [['desktop', { width: 1440, height: 900 }], ['mobile', 
   results.push({
     form,
     layoutsPerSec: (z.LayoutCount - a.LayoutCount) / secs,
+    stylesPerSec: (z.RecalcStyleCount - a.RecalcStyleCount) / secs,
     layoutMsPerSec: ((z.LayoutDuration - a.LayoutDuration) * 1000) / secs,
     styleMsPerSec: ((z.RecalcStyleDuration - a.RecalcStyleDuration) * 1000) / secs,
     scriptMsPerSec: ((z.ScriptDuration - a.ScriptDuration) * 1000) / secs,
@@ -39,9 +40,9 @@ for (const [form, vp] of [['desktop', { width: 1440, height: 900 }], ['mobile', 
 await b.close();
 const md = [
   `### Loop em execução: ${label}`, '',
-  '| | Layouts/s | Layout (ms/s) | Estilo (ms/s) | Script (ms/s) | FPS (headless) |',
-  '|---|---:|---:|---:|---:|---:|',
-  ...results.map((r) => `| ${r.form === 'mobile' ? 'Celular (390 px)' : 'Desktop (1440 px)'} | ${r.layoutsPerSec.toFixed(1)} | ${r.layoutMsPerSec.toFixed(1)} | ${r.styleMsPerSec.toFixed(1)} | ${r.scriptMsPerSec.toFixed(0)} | ${r.fps.toFixed(0)} |`),
+  '| | Layouts/s | Recálculos de estilo/s | Layout (ms/s) | Estilo (ms/s) | Script (ms/s) | FPS (headless) |',
+  '|---|---:|---:|---:|---:|---:|---:|',
+  ...results.map((r) => `| ${r.form === 'mobile' ? 'Celular (390 px)' : 'Desktop (1440 px)'} | ${r.layoutsPerSec.toFixed(1)} | ${r.stylesPerSec.toFixed(0)} | ${r.layoutMsPerSec.toFixed(1)} | ${r.styleMsPerSec.toFixed(1)} | ${r.scriptMsPerSec.toFixed(0)} | ${r.fps.toFixed(0)} |`),
   '',
 ].join('\n');
 mkdirSync(new URL('../reports/', import.meta.url), { recursive: true });

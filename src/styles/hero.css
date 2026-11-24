@@ -82,7 +82,8 @@ body.studio-open .picker, body.studio-open .flavor { opacity: 0; pointer-events:
   .pick { padding: 4px; }
   .pick-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .pick-dot { width: 34px; height: 34px; }
-  body.studio-open .can-stage { transform: translateY(-14svh) scale(0.8); }
+  body.studio-open .can-stage { top: var(--header-h); bottom: 52svh; }
+  body.studio-open .floats { top: 26svh; }
   body.studio-open .hero-copy { opacity: 0; }
 }
 

@@ -96,10 +96,11 @@ async function buildCan() {
   addPrimitive(doc, mesh, xform(body, { y: 0.0115 + 0.0465 }), label);
 
   const bottom = new THREE.LatheGeometry(v2([[0, 0.0045], [0.012, 0.0035], [0.019, 0.0016], [0.0225, 0.0002], [0.025, 0], [0.0275, 0.0012], [0.030, 0.0042], [0.0322, 0.0085], [0.033, 0.0115]]), SEG);
-  addPrimitive(doc, mesh, bottom, metal);
+  // a costura do torno nasce em +Z (de frente para a câmera): girar 180° manda ela para as costas
+  addPrimitive(doc, mesh, xform(bottom, { ry: Math.PI }), metal);
 
   const top = new THREE.LatheGeometry(v2([[0.033, 0.1045], [0.0327, 0.1075], [0.0312, 0.1115], [0.0290, 0.1158], [0.0279, 0.1192], [0.0278, 0.1212], [0.0284, 0.1226], [0.0280, 0.1236], [0.0270, 0.1232], [0.0264, 0.1215], [0.0259, 0.1188], [0.0250, 0.1178], [0.0, 0.1176]]), SEG);
-  addPrimitive(doc, mesh, top, metal);
+  addPrimitive(doc, mesh, xform(top, { ry: Math.PI }), metal);
 
   // anel (lacre): retângulo arredondado com furo, deitado na tampa
   const tab = new THREE.Shape();

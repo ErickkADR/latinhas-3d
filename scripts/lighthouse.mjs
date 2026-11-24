@@ -19,7 +19,7 @@ for (const form of ['mobile', 'desktop']) {
     const j = JSON.parse(readFileSync(file, 'utf8'));
     const c = j.categories, a = j.audits;
     res.push({
-      perf: c.performance.score * 100, a11y: c.accessibility.score * 100, bp: c['best-practices'].score * 100, seo: c.seo.score * 100,
+      perf: Math.round(c.performance.score * 100), a11y: Math.round(c.accessibility.score * 100), bp: Math.round(c['best-practices'].score * 100), seo: Math.round(c.seo.score * 100),
       fcp: a['first-contentful-paint'].numericValue, lcp: a['largest-contentful-paint'].numericValue, tbt: a['total-blocking-time'].numericValue,
       cls: a['cumulative-layout-shift'].numericValue, bytes: a['total-byte-weight'].numericValue, reqs: a['network-requests'].details.items.length,
       fails: Object.values(a).filter((x) => x.score !== null && x.score < 1 && ['accessibility', 'best-practices', 'seo'].some((k) => c[k].auditRefs.some((r) => r.id === x.id && r.weight > 0))).map((x) => x.id),

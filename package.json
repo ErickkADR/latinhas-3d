@@ -1,18 +1,22 @@
 {
   "name": "latinhas-3d",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Landing page 3D de latinhas personalizadas: model-viewer + GSAP + Vite, estampa gerada em canvas.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 4173",
     "models:raw": "node scripts/generate-models.mjs",
-    "models:optimize": "node scripts/optimize-models.mjs"
+    "models:optimize": "node scripts/optimize-models.mjs",
+    "images:capture": "node scripts/capture-cards.mjs http://localhost:5173",
+    "images:optimize": "node scripts/optimize-images.mjs",
+    "measure:lighthouse": "node scripts/lighthouse.mjs http://localhost:4173",
+    "measure:runtime": "node scripts/measure-runtime.mjs http://localhost:4173",
+    "measure:profile": "node scripts/profile.mjs http://localhost:4173"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Erick Dantas",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "@google/model-viewer": "^4.4.0",
