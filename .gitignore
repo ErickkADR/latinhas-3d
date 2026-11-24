@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vercel/
+.DS_Store
+# saídas cruas do gerador (regeneráveis com npm run models:raw / images:capture)
+assets-src/models-raw/
+assets-src/img-raw/
+public/models-raw/
+public/img-raw/
+reports/*.json
+reports/traces/
+referencia-post.png

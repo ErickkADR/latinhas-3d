@@ -1,0 +1,15 @@
+:root {
+  /* cor do tema atual: trocada pelo theme-switch.js */
+  --bg: #ffd84d;
+  --ink: #1d1600;
+  /* seções abaixo do herói */
+  --paper: #f6f1e7;
+  --text: #17140f;
+  --muted: #514a3f;
+  --line: rgba(23, 20, 15, 0.16);
+  --font: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --radius: 22px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --gutter: clamp(16px, 4vw, 56px);
+  --header-h: 72px;
+}

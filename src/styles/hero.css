@@ -1,0 +1,93 @@
+.hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  min-height: max(640px, 100svh); color: var(--ink); transition: color 0.5s;
+}
+.hero-bg { position: absolute; inset: 0; z-index: -2; background: var(--bg); transition: background-color 0.6s; }
+.hero-reveal { position: absolute; inset: 0; opacity: 0; will-change: clip-path; }
+.bubbles { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; opacity: 0.8; }
+
+.hero-word {
+  position: absolute; left: 50%; top: 50%; z-index: -1; transform: translate(-50%, -50%);
+  font-size: clamp(6rem, 25vw, 26rem); font-weight: 800; line-height: 0.8; letter-spacing: -0.06em;
+  text-transform: uppercase; white-space: nowrap; color: transparent;
+  -webkit-text-stroke: 2px color-mix(in srgb, var(--ink) 22%, transparent);
+  user-select: none; pointer-events: none;
+}
+
+.floats { position: absolute; left: 50%; top: 52%; width: 0; height: 0; pointer-events: none; }
+.float { position: absolute; left: 0; top: 0; will-change: transform; }
+.float model-viewer { display: block; pointer-events: none; }
+
+.can-stage {
+  position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; pointer-events: none;
+  transition: transform 0.6s var(--ease-out);
+}
+.can { width: min(42vw, 520px); height: min(80svh, 780px); pointer-events: none; }
+.can.is-spinning { filter: url(#spin-blur); }
+
+.hero-copy {
+  position: absolute; left: var(--gutter); bottom: clamp(32px, 9vh, 96px); z-index: 4; max-width: 27rem;
+}
+.hero-copy h1 { font-size: clamp(2.6rem, 5.4vw, 5rem); font-weight: 800; letter-spacing: -0.045em; margin: 12px 0 16px; }
+.hero-lede { font-size: 1.08rem; max-width: 24rem; font-weight: 500; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+
+.flavor { position: absolute; right: var(--gutter); top: calc(var(--header-h) + 8vh); z-index: 4; text-align: right; max-width: 18rem; }
+.flavor-name { font-size: clamp(1.5rem, 2.4vw, 2.2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+.flavor-tagline { margin-top: 8px; font-weight: 500; }
+.flavor p { will-change: transform, opacity; }
+
+.picker {
+  position: absolute; right: var(--gutter); bottom: clamp(32px, 9vh, 96px); z-index: 4;
+  display: flex; flex-direction: column; gap: 6px; align-items: flex-end;
+  transition: opacity 0.3s, transform 0.4s var(--ease-out);
+}
+.pick {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 4px 6px 4px 16px;
+  border: 2px solid transparent; border-radius: 999px; background: none; cursor: pointer; font-weight: 700;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+.pick-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--ink); flex: none; }
+.pick:hover { border-color: color-mix(in srgb, var(--ink) 30%, transparent); }
+.pick[aria-checked='true'] { border-color: var(--ink); background: color-mix(in srgb, var(--ink) 8%, transparent); }
+
+/* estúdio aberto: a lata abre espaço para o painel */
+body.studio-open .picker, body.studio-open .flavor { opacity: 0; pointer-events: none; }
+@media (min-width: 861px) {
+  body.studio-open .can-stage { transform: translateX(-14vw); }
+  body.studio-open .hero-copy { opacity: 0; pointer-events: none; }
+}
+
+@media (max-width: 860px) {
+  .hero { min-height: max(600px, 100svh); }
+  .hero-copy {
+    left: var(--gutter); right: var(--gutter); top: calc(var(--header-h) + 4px); bottom: auto; max-width: none; text-align: center;
+  }
+  .hero-copy .eyebrow { display: none; }
+  .hero-copy h1 { font-size: clamp(2.1rem, 9.5vw, 3rem); margin: 0 0 8px; }
+  .hero-copy h1 br { display: none; }
+  .hero-lede { font-size: 0.95rem; margin: 0 auto; }
+  .hero-actions { justify-content: center; margin-top: 14px; }
+  .hero-actions .btn { min-height: 44px; padding: 0 18px; }
+  .can-stage { top: 30%; bottom: 120px; }
+  .can { width: 70vw; height: 100%; }
+  .floats { top: 58%; }
+  .flavor { left: var(--gutter); right: var(--gutter); top: auto; bottom: 74px; text-align: center; max-width: none; }
+  .flavor-name { font-size: 1.25rem; }
+  .flavor-tagline { display: none; }
+  .picker {
+    left: 0; right: 0; bottom: 14px; flex-direction: row; justify-content: center; gap: 4px; flex-wrap: nowrap;
+    overflow-x: auto; padding: 0 var(--gutter); scrollbar-width: none;
+  }
+  .pick { padding: 4px; }
+  .pick-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .pick-dot { width: 34px; height: 34px; }
+  body.studio-open .can-stage { transform: translateY(-14svh) scale(0.8); }
+  body.studio-open .hero-copy { opacity: 0; }
+}
+
+/* modo de captura dos cards (?shot=tema) */
+body.is-shot .site-header, body.is-shot .hero-copy, body.is-shot .flavor, body.is-shot .picker, body.is-shot .bubbles, body.is-shot .hero-word { display: none; }
+body.is-shot .can { width: 80vw; height: 86vh; }
+body.is-shot .can-stage { inset: 0; transform: none; }
+body.is-shot .floats { top: 50%; }
