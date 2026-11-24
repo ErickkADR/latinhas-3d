@@ -23,7 +23,7 @@ justificada por um número medido antes e depois.
 > **v2 (24/11/2026):** a página perdeu os elementos 3D flutuantes (frutas/estrelas), as bolhas, o fundo que mudava de cor por tema e o estúdio "Sua lata"
 > (nome, cor, envio de imagem). O que sobrou é a lata e a troca de arte. As seções "estúdio", "elementos" e "bolhas" abaixo descrevem a v0/v1 e continuam no histórico do git.
 > Números da v2 (mediana de 3, Lighthouse 13.6): celular **97 · 100 · 100 · 100** (TBT 197 ms, 0,53 MB), desktop **100 · 100 · 100 · 100** (0,48 MB); com o mouse
-> mexendo, **4 recálculos de estilo/s** e **9,4%** da thread principal no desktop (8,9% no celular). Só `can.glb` (91 KB) vai para a rede.
+> mexendo, **0 recálculos de estilo/s no desktop (4 no celular)** e **9,4%** da thread principal (8,9% no celular). Só `can.glb` (91 KB) vai para a rede.
 
 ## Como rodar
 
