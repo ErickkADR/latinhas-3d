@@ -20,6 +20,15 @@ justificada por um número medido antes e depois.
 - **Quatro temas** (Limão, Cereja, Mirtilo, Menta), escolhidos num seletor acessível (`radiogroup` com setas) ou nos cards.
 - **Responsivo de verdade**: no celular o layout se reorganiza, o menu é próprio (painel em tela cheia, foco preso, Esc fecha) e a estampa usa 1024 px em vez de 2048.
 
+> **v3 (25/11/2026):** a página é só o herói animado (sem seções abaixo, menu nem rodapé). **Giro livre de 360°**: arrastar em qualquer ponto livre gira a lata (com inércia).
+> O canvas da lata ocupa o herói inteiro, então nada é cortado em nenhum ângulo. Texto à esquerda e temas à direita, centralizados na vertical. O fundo agora é **CSS puro**
+> (degradê + ladrilho de ruído de 24 KB como dithering), o mesmo do `copos-laser`, sem imagem para pixelar.
+>
+> **v3 (25/11/2026):** a página é só o herói animado (sem seções abaixo, menu nem rodapé). **Giro livre de 360°**: arrastar em qualquer ponto livre gira a lata (com inércia).
+> O canvas da lata ocupa o herói inteiro, então nada é cortado em nenhum ângulo. Texto à esquerda e temas à direita, centralizados na vertical. O fundo agora é **CSS puro**
+> (degradê + ladrilho de ruído de 24 KB como dithering), o mesmo do `copos-laser`, sem imagem para pixelar. Lighthouse local (mediana de 3): **100 · 100 · 100 · 100** no celular
+> (TBT 68 ms, 0,47 MB) e no desktop (TBT 0 ms).
+>
 > **v2 (24/11/2026):** a página perdeu os elementos 3D flutuantes (frutas/estrelas), as bolhas, o fundo que mudava de cor por tema e o estúdio "Sua lata"
 > (nome, cor, envio de imagem). O que sobrou é a lata e a troca de arte. As seções "estúdio", "elementos" e "bolhas" abaixo descrevem a v0/v1 e continuam no histórico do git.
 > Números da v2 (mediana de 3, Lighthouse 13.6): celular **96 · 100 · 100 · 100** (TBT 220 ms, 0,53 MB), desktop **100 · 100 · 100 · 100** (0,49 MB); com o mouse

@@ -1,39 +1,38 @@
 .hero {
   position: relative; isolation: isolate; overflow: hidden;
-  height: 100vh; height: 100svh; color: var(--ink); transition: color 0.5s;
+  height: 100vh; height: 100svh; color: var(--ink);
+  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
 }
-/* fundo único dos dois projetos: parede escura de estúdio (com brilho no chão) */
-.hero-bg { position: absolute; inset: 0; z-index: -2; background: var(--bg); }
-.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+.hero.is-grabbing { cursor: grabbing; }
 
-
-
-.can-stage {
-  position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; pointer-events: none;
-  transition: transform 0.6s var(--ease-out);
+/* Fundo único dos dois projetos, desenhado por código (sem imagem para pixelar): parede escura com foco de luz,
+   brilho de chão e um ladrilho de ruído de 128 px por cima que quebra as faixas do degradê (dithering). */
+.hero-bg {
+  position: absolute; inset: 0; z-index: -2;
+  background:
+    radial-gradient(ellipse 62% 58% at 50% 46%, #2b2c31 0%, rgba(43, 44, 49, 0) 72%),
+    radial-gradient(ellipse 52% 11% at 50% 90%, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(180deg, #17181b 0%, #0d0d0f 70%, #080809 100%);
 }
-.can { width: min(42vw, 520px); height: min(80svh, 780px); pointer-events: none; }
+.hero-bg::after { content: ''; position: absolute; inset: 0; background: url('/img/noise.png') 0 0 / 128px 128px; opacity: 0.035; }
+
+/* o canvas do copo ocupa o herói inteiro: nenhuma parte do modelo é cortada, em nenhum ângulo do giro */
+.can-stage { position: absolute; inset: 0; z-index: 2; pointer-events: none; transition: transform 0.6s var(--ease-out); }
+.can { width: 100%; height: 100%; pointer-events: none; }
 .can.is-spinning { filter: url(#spin-blur); }
 
-.hero-copy {
-  position: absolute; left: var(--gutter); bottom: clamp(32px, 9vh, 96px); z-index: 4; max-width: 27rem;
-}
+/* texto à esquerda e temas à direita, os dois centralizados na vertical */
+.hero-copy { position: absolute; left: var(--gutter); top: 50%; transform: translateY(-50%); z-index: 4; max-width: 27rem; }
 .hero-copy h1 { font-size: clamp(2.6rem, 5.4vw, 5rem); font-weight: 800; letter-spacing: -0.045em; margin: 12px 0 16px; }
 .hero-lede { font-size: 1.08rem; max-width: 24rem; font-weight: 500; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
-
-.flavor { position: absolute; right: var(--gutter); top: calc(var(--header-h) + 8vh); z-index: 4; text-align: right; max-width: 18rem; }
-.flavor-name { font-size: clamp(1.5rem, 2.4vw, 2.2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
-.flavor-tagline { margin-top: 8px; font-weight: 500; }
-.flavor p { will-change: transform, opacity; }
 
 .picker {
-  position: absolute; right: var(--gutter); bottom: clamp(32px, 9vh, 96px); z-index: 4;
-  display: flex; flex-direction: column; gap: 6px; align-items: flex-end;
-  transition: opacity 0.3s, transform 0.4s var(--ease-out);
+  position: absolute; right: var(--gutter); top: 50%; transform: translateY(-50%); z-index: 4;
+  display: flex; flex-direction: column; gap: 6px; align-items: flex-end; cursor: auto; touch-action: pan-x;
+  transition: opacity 0.3s;
 }
 .pick {
-  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 4px 18px;
+  display: inline-flex; align-items: center; min-height: 44px; padding: 4px 18px;
   border: 2px solid transparent; border-radius: 999px; background: none; cursor: pointer; font-weight: 700;
   transition: border-color 0.3s, background-color 0.3s;
 }
@@ -41,30 +40,21 @@
 .pick[aria-checked='true'] { border-color: var(--ink); background: color-mix(in srgb, var(--ink) 8%, transparent); }
 
 @media (max-width: 860px) {
-  .hero { height: 100vh; height: 100svh; }
-  .hero-copy {
-    left: var(--gutter); right: var(--gutter); top: calc(var(--header-h) + 4px); bottom: auto; max-width: none; text-align: center;
-  }
+  .hero-copy { left: var(--gutter); right: var(--gutter); top: calc(var(--header-h) + 8px); transform: none; max-width: none; text-align: center; }
   .hero-copy .eyebrow { display: none; }
-  .hero-copy h1 { font-size: clamp(2.1rem, 9.5vw, 3rem); margin: 0 0 8px; }
+  .hero-copy h1 { font-size: clamp(2rem, 9vw, 2.8rem); margin: 0 0 8px; }
   .hero-copy h1 br { display: none; }
   .hero-lede { font-size: 0.95rem; margin: 0 auto; }
-  .hero-actions { justify-content: center; margin-top: 14px; }
-  .hero-actions .btn { min-height: 44px; padding: 0 18px; }
-  .can-stage { top: 30%; bottom: 120px; }
-  .can { width: 70vw; height: 100%; }
-  .flavor { left: var(--gutter); right: var(--gutter); top: auto; bottom: 74px; text-align: center; max-width: none; }
-  .flavor-name { font-size: 1.25rem; }
-  .flavor-tagline { display: none; }
+  .can-stage { transform: translateY(8%); }
   .picker {
-    left: 0; right: 0; bottom: 14px; flex-direction: row; justify-content: safe center; gap: 4px; flex-wrap: nowrap;
+    left: 0; right: 0; top: auto; bottom: 14px; transform: none; flex-direction: row; justify-content: safe center; gap: 4px; flex-wrap: nowrap;
     overflow-x: auto; padding: 0 var(--gutter); scrollbar-width: none;
   }
-  .pick { padding: 4px; }
-  .pick-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .pick { white-space: nowrap; padding: 4px 14px; }
+  n-stage { transform: translateY(-14%); }
+  
 }
 
-/* modo de captura dos cards (?shot=tema) */
-body.is-shot .site-header, body.is-shot .hero-copy, body.is-shot .flavor, body.is-shot .picker { display: none; }
-body.is-shot .can { width: 80vw; height: 86vh; }
-body.is-shot .can-stage { inset: 0; transform: none; }
+/* modo de captura (?shot=arte) */
+body.is-shot .site-header, body.is-shot .hero-copy, body.is-shot .picker { display: none; }
+body.is-shot .can-stage { transform: none; }

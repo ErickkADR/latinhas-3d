@@ -1,12 +1,10 @@
-// Entrada leve: estilos, menu, seletor, cards e textos. Pinta a página sem esperar o 3D.
+// Entrada leve: estilos e seletor. Pinta a página sem esperar o 3D.
 // O 3D (model-viewer + three + GSAP) vem num chunk separado, importado depois da primeira pintura.
 import './styles/index.css';
 import { THEMES } from './config/themes.js';
-import { initMenu } from './modules/menu.js';
 import { createUI } from './modules/ui.js';
 
-const ui = createUI({ imgBase: '/img/', imgExt: 'webp' });
-initMenu();
+const ui = createUI();
 
 // Enquanto o 3D não chegou, cliques ficam guardados e são repassados quando a cena estiver pronta.
 const early = [];
@@ -15,11 +13,6 @@ const send = (action) => (scene ? scene.handle(action) : early.push(action));
 
 ui.onPick((id) => {
   ui.setActive(id);
-  send({ type: 'theme', id });
-});
-ui.onCard((id) => {
-  ui.setActive(id);
-  document.getElementById('topo').scrollIntoView({ behavior: 'smooth' });
   send({ type: 'theme', id });
 });
 

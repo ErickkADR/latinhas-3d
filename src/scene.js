@@ -23,12 +23,14 @@ export async function startScene({ ui, initial }) {
   const shot = document.body.classList.toggle('is-shot', new URLSearchParams(location.search).has('shot'));
   if (shot) Object.assign(pointer, { active: true, nx: 0.12, ny: -0.1, x: -9999, y: -9999 });
 
+  document.querySelector('[data-can]').setAttribute('camera-orbit', `0deg 84deg ${window.innerWidth <= 860 ? '0.42m' : '0.4m'}`);
   const can = createCan(document.querySelector('[data-can]'), {
     src: `${MODELS_BASE}can.glb`,
     labelSize: device === 'mobile' ? SETTINGS.label.mobile : SETTINGS.label.desktop,
     reducedMotion,
   });
-  const switcher = createThemeSwitcher({ can, ui, reducedMotion });
+  can.enableDrag(hero);
+  const switcher = createThemeSwitcher({ can, reducedMotion });
 
   // herói fora da tela = loop parado (nada de renderizar 3D que ninguém vê)
   new IntersectionObserver(([e]) => (e.isIntersecting ? resume('offscreen') : pause('offscreen'))).observe(hero);

@@ -40,4 +40,9 @@ Estudo de portfólio: o README é a vitrine (decisões + números antes/depois).
   "Sua lata": a única opção é a arte (o tema). Os módulos `elements.js`, `bubbles.js`, `customizer.js` e os modelos de fruta/estrela foram removidos (histórico do git tem tudo).
 - O README e as seções acima deste bloco que falam de elementos, bolhas, estúdio e `bg` por tema descrevem a v0/v1.
 - Hero com `height: 100vh` exato (sem altura mínima). Nenhuma marca real de bebida em nada.
-- Fundo do herói: `public/img/bg-960.webp` e `bg-1920.webp` (parede escura de estúdio) num `<img>` com `srcset`; mesmo arquivo do `copos-laser`.
+
+
+## v3 (25/11/2026, pedido do Erick)
+- **Só o herói**: sem seções, menu, rodapé nem cards. A página não rola. **Giro livre de 360°** (`can.enableDrag(hero)`, inércia; `state.drag` é aditivo ao tilt e ao giro do GSAP).
+- **Canvas da lata = herói inteiro** (nada é cortado). O `<model-viewer>` precisa de `max-camera-orbit="auto auto 2m"` para a distância da câmera valer (0,4 m desktop, 0,42 m celular).
+- **Fundo em CSS** (`hero.css`: degradê + brilho de chão + `public/img/noise.png`). A imagem de parede que o Erick mandou ficou pixelada e foi descartada. Mesmo CSS do `copos-laser`.

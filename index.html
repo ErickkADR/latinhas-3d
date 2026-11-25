@@ -18,46 +18,25 @@
     <link rel="preload" href="/models/can.glb" as="fetch" type="model/gltf-binary" crossorigin />
   </head>
   <body>
-    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-
     <header class="site-header" data-header>
-      <a class="brand" href="#topo" aria-label="Latinha, início">
+      <a class="brand" href="/" aria-label="Latinha, início">
         <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="3" width="18" height="26" rx="5" fill="currentColor"/><rect x="10" y="8" width="12" height="13" rx="2" fill="var(--bg)"/></svg>
         <span>latinha</span>
       </a>
-      <nav class="nav" aria-label="Principal">
-        <ul class="nav-list">
-          <li><a href="#temas">Temas</a></li>
-          <li><a href="#como-funciona">Como funciona</a></li>
-          <li><a href="#bastidores">Bastidores</a></li>
-        </ul>
-      </nav>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-mobile" data-menu-toggle>
-        <span class="menu-toggle-bars" aria-hidden="true"></span>
-        <span class="sr-only">Abrir menu</span>
-      </button>
     </header>
-
-    <div class="menu-mobile" id="menu-mobile" data-menu hidden>
-      <nav aria-label="Menu do celular">
-        <ul>
-          <li><a href="#temas" data-menu-link>Temas</a></li>
-          <li><a href="#como-funciona" data-menu-link>Como funciona</a></li>
-          <li><a href="#bastidores" data-menu-link>Bastidores</a></li>
-        </ul>
-      </nav>
-    </div>
 
     <main id="conteudo">
       <section class="hero" id="topo" aria-labelledby="hero-title" data-hero>
-        <div class="hero-bg" aria-hidden="true"><img src="/img/bg-1920.webp" srcset="/img/bg-960.webp 960w, /img/bg-1920.webp 1920w" sizes="100vw" width="1920" height="1280" alt="" decoding="async" /></div>
+        <div class="hero-bg" aria-hidden="true"></div>
 
         <div class="can-stage">
           <model-viewer
             class="can"
             data-can
             alt="Lata de alumínio em 3D com a estampa do tema escolhido"
-            camera-orbit="0deg 84deg 0.36m"
+            camera-orbit="0deg 84deg 0.4m"
+            min-camera-orbit="auto auto 0.1m"
+            max-camera-orbit="auto auto 2m"
             field-of-view="26deg"
             environment-image="neutral"
             tone-mapping="neutral"
@@ -76,57 +55,11 @@
           <p class="eyebrow">Latas personalizadas</p>
           <h1 id="hero-title">Sua lata, <br />sua estampa.</h1>
           <p class="hero-lede">Escolha o tema e veja a estampa na lata 3D. Ela é gerada na hora, num canvas.</p>
-          <div class="hero-actions">
-            <a class="btn btn--solid" href="#temas">Ver temas</a>
-          </div>
-        </div>
-
-        <div class="flavor" aria-live="polite">
-          <p class="flavor-name" data-flavor-name>Limão Siciliano</p>
         </div>
 
         <div class="picker" role="radiogroup" aria-label="Tema da lata" data-picker></div>
       </section>
-
-      <section class="section themes" id="temas" aria-labelledby="temas-title">
-        <div class="section-head">
-          <p class="eyebrow">Temas prontos</p>
-          <h2 id="temas-title">Quatro estampas para começar</h2>
-          <p>Cada tema tem a própria cor e padrão, desenhados na hora num canvas.</p>
-        </div>
-        <ul class="cards" data-cards></ul>
-      </section>
-
-      <section class="section how" id="como-funciona" aria-labelledby="como-title">
-        <div class="section-head">
-          <p class="eyebrow">Como funciona</p>
-          <h2 id="como-title">Do tema à lata em três passos</h2>
-        </div>
-        <ol class="steps">
-          <li><span class="step-n" aria-hidden="true">1</span><h3>Escolha o tema</h3><p>Quatro estampas prontas, cada uma com cor e padrão próprios.</p></li>
-          <li><span class="step-n" aria-hidden="true">2</span><h3>A estampa nasce no canvas</h3><p>Nada de imagem de textura para baixar: ela é desenhada na hora e vai direto para a lata 3D.</p></li>
-          <li><span class="step-n" aria-hidden="true">3</span><h3>Gire e compare</h3><p>A troca de tema gira a lata 720° e muda a estampa no pico do giro.</p></li>
-        </ol>
-      </section>
-
-      <section class="section backstage" id="bastidores" aria-labelledby="bastidores-title">
-        <div class="section-head">
-          <p class="eyebrow">Bastidores</p>
-          <h2 id="bastidores-title">Bonito e leve não são opostos</h2>
-          <p>Esta página é um estudo de interação e performance. Cada otimização veio de um número medido, não de achismo.</p>
-        </div>
-        <dl class="stats">
-          <div><dt>Peso dos modelos 3D</dt><dd>191 KB <small>eram 11,3 MB (−98%). Pipeline gltf-transform: Meshopt, simplificação e texturas WebP.</small></dd></div>
-          <div><dt>Peso da página</dt><dd>0,64 MB <small>eram 11,9 MB. Thread principal ocupada com o mouse mexendo: de 78% para 14%.</small></dd></div>
-          <div><dt>Lighthouse (A11y · BP · SEO)</dt><dd>100 · 100 · 100 <small>Performance também em 100 no celular (era 56), medido com o Lighthouse.</small></dd></div>
-        </dl>
-      </section>
     </main>
-
-    <footer class="site-footer">
-      <p>Latinha é uma marca fictícia, criada como estudo de front-end 3D. Nenhuma marca real de bebida foi usada.</p>
-      <p><a href="https://github.com/ErickkADR/latinhas-3d">Código no GitHub</a> · feito por Erick Dantas</p>
-    </footer>
 
     <svg class="sr-only" aria-hidden="true" focusable="false">
       <filter id="spin-blur" x="-30%" y="-5%" width="160%" height="110%" color-interpolation-filters="sRGB">

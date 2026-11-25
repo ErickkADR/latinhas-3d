@@ -3,7 +3,7 @@
 import { gsap } from 'gsap';
 import { SETTINGS } from '../config/settings.js';
 
-export function createThemeSwitcher({ can, ui, reducedMotion }) {
+export function createThemeSwitcher({ can, reducedMotion }) {
   let current = null;
   let running = null;
   let pending = null;
@@ -11,7 +11,6 @@ export function createThemeSwitcher({ can, ui, reducedMotion }) {
   // primeira pintura: sem animação
   async function init(theme) {
     current = theme;
-    ui.setTexts(theme);
     await can.applyTheme(theme);
   }
 
@@ -21,16 +20,12 @@ export function createThemeSwitcher({ can, ui, reducedMotion }) {
     current = theme;
 
     if (reducedMotion) {
-      ui.setTexts(theme);
       can.setTexture(tex);
       return;
     }
 
     const dur = SETTINGS.spin.duration;
     const tl = gsap.timeline();
-    tl.to(ui.texts, { yPercent: -40, opacity: 0, duration: 0.3, ease: 'power2.in' }, 0);
-    tl.call(() => ui.setTexts(theme), null, 0.36);
-    tl.fromTo(ui.texts, { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.55, ease: 'power3.out' }, 0.4);
     tl.to(can.state, { spin: `+=${SETTINGS.spin.degrees}`, duration: dur, ease: 'power2.inOut' }, 0);
     tl.call(() => can.setTexture(tex), null, dur / 2);
     tl.call(() => { can.state.spin %= 360; }, null, dur + 0.01);
