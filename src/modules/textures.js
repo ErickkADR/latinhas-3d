@@ -106,91 +106,72 @@ function barcode(ctx, x, y, w, h, ink, r) {
   ctx.fillStyle = ink;
 }
 
-/**
- * Desenha a estampa de um tema. `theme.custom` (estúdio) traz { text, image, layout }.
- * @returns {HTMLCanvasElement}
- */
+const imgs = new Map();
+export function loadLabelImage(src) {
+  if (!imgs.has(src)) imgs.set(src, new Promise((res, rej) => { const i = new Image(); i.decoding = 'async'; i.onload = () => res(i); i.onerror = rej; i.src = src; }));
+  return imgs.get(src);
+}
+
+// Condensação: gotas de vários tamanhos com sombra, brilho de ponta e rastro nas maiores, mais uma névoa fria leve.
+// O desenho é determinístico (semente fixa), então o mesmo tema sempre tem as mesmas gotas.
+const dropLayers = new Map();
+function condensation(target, W, H) {
+  const key = `${W}x${H}`;
+  if (!dropLayers.has(key)) {
+    const layer = document.createElement('canvas'); layer.width = W; layer.height = H;
+    paintCondensation(layer.getContext('2d'), W, H);
+    dropLayers.set(key, layer); // as gotas são iguais em todos os temas: desenha uma vez por tamanho
+  }
+  target.drawImage(dropLayers.get(key), 0, 0);
+}
+
+function paintCondensation(ctx, W, H) {
+  const r = rng(2026);
+  ctx.save();
+  const haze = ctx.createLinearGradient(0, 0, 0, H);
+  haze.addColorStop(0, 'rgba(200,225,255,0.07)'); haze.addColorStop(1, 'rgba(200,225,255,0.18)');
+  ctx.fillStyle = haze; ctx.fillRect(0, 0, W, H);
+  const drop = (x, y, rad, streak) => {
+    const rx = rad, ry = rad * 1.28;
+    if (streak) {
+      const g = ctx.createLinearGradient(0, y - streak, 0, y);
+      g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(255,255,255,0.16)');
+      ctx.fillStyle = g; ctx.fillRect(x - rx * 0.3, y - streak, rx * 0.6, streak);
+    }
+    const body = ctx.createRadialGradient(x - rx * 0.25, y - ry * 0.3, rx * 0.1, x, y, ry);
+    body.addColorStop(0, 'rgba(255,255,255,0.10)'); body.addColorStop(0.65, 'rgba(0,0,0,0.10)'); body.addColorStop(1, 'rgba(0,0,0,0.55)');
+    ctx.fillStyle = body;
+    ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.28)';
+    ctx.beginPath(); ctx.ellipse(x + rx * 0.2, y + ry * 0.45, rx * 0.5, ry * 0.28, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    ctx.beginPath(); ctx.ellipse(x - rx * 0.38, y - ry * 0.42, rx * 0.26, ry * 0.2, -0.5, 0, Math.PI * 2); ctx.fill();
+  };
+  const k = (W / 2048) * 1.8;
+  for (let i = 0; i < 1700; i++) drop(r() * W, r() * H, (1.6 + r() * r() * 5) * k, 0);
+  for (let i = 0; i < 130; i++) drop(r() * W, r() * H, (6 + r() * 7) * k, r() > 0.55 ? (30 + r() * 110) * k : 0);
+  ctx.restore();
+}
+
+/** Desenha a estampa de um tema: o rótulo original (imagem 2:1) com a condensação por cima. @returns {HTMLCanvasElement} */
 export function drawLabel(theme, [W, H], canvas = document.createElement('canvas')) {
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
-  const c = theme.label;
-  const custom = theme.custom || null;
-  const r = rng([...theme.id].reduce((s, ch) => s * 31 + ch.charCodeAt(0), 7));
-
-  // fundo
-  const g = ctx.createLinearGradient(0, 0, 0, H);
-  g.addColorStop(0, c.base); g.addColorStop(1, c.deep);
-  ctx.fillStyle = c.base; ctx.fillRect(0, 0, W, H);
-  ctx.globalAlpha = 0.35; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1;
-
-  const full = custom?.image && custom.layout === 'full';
-  if (full) drawCover(ctx, custom.image, W * 0.2, 0, W * 0.6, H);
-  else { ctx.save(); PATTERNS[c.pattern]?.(ctx, W, H, c, r); ctx.restore(); }
-
-  // faixas de cima e de baixo
-  const band = H * 0.075;
-  ctx.globalAlpha = 1; ctx.fillStyle = c.deep;
-  ctx.fillRect(0, 0, W, band); ctx.fillRect(0, H - band, W, band);
-  ctx.fillStyle = c.accent; ctx.fillRect(0, band, W, H * 0.008); ctx.fillRect(0, H - band - H * 0.008, W, H * 0.008);
-
-  const cx = W / 2;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-
-  // marca (no alto, de frente)
-  ctx.fillStyle = full ? '#fff' : c.ink;
-  ctx.font = `700 ${Math.round(H * 0.06)}px ${FONT}`;
-  ctx.fillText('latinha', cx, band * 0.5 + 2);
-
-  // arte enviada no layout clássico: um selo redondo acima do nome
-  let nameY = H * 0.54;
-  if (custom?.image && !full) {
-    const s = H * 0.34, y = H * 0.14;
-    ctx.save();
-    ctx.beginPath(); ctx.arc(cx, y + s / 2, s / 2, 0, Math.PI * 2); ctx.closePath();
-    ctx.fillStyle = '#fff'; ctx.fill(); ctx.clip();
-    drawCover(ctx, custom.image, cx - s / 2, y, s, s);
-    ctx.restore();
-    ctx.lineWidth = H * 0.012; ctx.strokeStyle = c.ink;
-    ctx.beginPath(); ctx.arc(cx, y + s / 2, s / 2, 0, Math.PI * 2); ctx.stroke();
-    nameY = H * 0.68;
+  ctx.fillStyle = '#111'; ctx.fillRect(0, 0, W, H);
+  if (theme.img) {
+    // A arte é QUADRADA e fica de frente, ocupando quase a altura toda do rótulo (de frente a lata mostra menos que meia volta, então ela é
+    // um pouco mais estreita que alta). Laterais, costas, topo e base continuam a partir das bordas da própria arte (colunas/linhas de pixels
+    // esticadas), sem desfoque e sem emenda.
+    const im = theme.img, n = im.naturalWidth || im.width;
+    const sh = H * 0.96, sw = H * 0.78; // altura e largura da arte na lata
+    const x = (W - sw) / 2, y = (H - sh) / 2;
+    ctx.drawImage(im, 0, 0, 1, n, 0, 0, x + 1, H); // borda esquerda -> até o canto esquerdo
+    ctx.drawImage(im, n - 1, 0, 1, n, x + sw - 1, 0, W - (x + sw) + 1, H); // borda direita -> até o canto direito
+    ctx.drawImage(im, 0, 0, n, 1, x, 0, sw, y + 1); // linha de cima
+    ctx.drawImage(im, 0, n - 1, n, 1, x, y + sh - 1, sw, H - (y + sh) + 1); // linha de baixo
+    ctx.drawImage(im, x, y, sw, sh);
   }
-
-  // nome (o protagonista)
-  const name = custom ? (custom.text || '').trim() : theme.short;
-  if (name) {
-    const lines = splitName(name);
-    const maxW = W * 0.23;
-    const maxSize = H * (custom?.image && !full ? 0.17 : lines.length > 1 ? 0.2 : 0.26);
-    const sizes = lines.map((l) => fitText(ctx, l.toUpperCase(), maxW, maxSize));
-    const size = Math.min(...sizes);
-    ctx.font = `800 ${size}px ${FONT}`;
-    const lh = size * 0.92;
-    const top = nameY - ((lines.length - 1) * lh) / 2;
-    if (full) {
-      ctx.fillStyle = c.base;
-      ctx.globalAlpha = 0.92;
-      roundRect(ctx, cx - W * 0.17, top - lh * 0.62, W * 0.34, lh * lines.length + lh * 0.24, H * 0.03); ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-    ctx.fillStyle = c.ink;
-    lines.forEach((l, i) => ctx.fillText(l.toUpperCase(), cx, top + i * lh));
-  }
-
-  // linha de apoio
-  ctx.font = `500 ${Math.round(H * 0.045)}px ${FONT}`;
-  ctx.fillStyle = full ? '#fff' : c.ink;
-  ctx.fillText(custom ? 'edição única · 350 ml' : `${theme.name.split(' ').slice(1).join(' ').toLowerCase() || 'clássico'} · 350 ml`, cx, H - band - H * 0.09);
-
-  // costas: código de barras e informação (desenhado dos dois lados da emenda)
-  for (const bx of [0, W]) {
-    ctx.save();
-    ctx.translate(bx, 0);
-    ctx.fillStyle = c.ink; ctx.font = `600 ${Math.round(H * 0.032)}px ${FONT}`;
-    ctx.fillText('marca fictícia · estudo 3D', 0, H * 0.3);
-    ctx.fillText('latinhas-3d.vercel.app', 0, H * 0.35);
-    barcode(ctx, -W * 0.05, H * 0.55, W * 0.1, H * 0.13, c.ink, rng(42));
-    ctx.restore();
-  }
+  condensation(ctx, W, H);
   return canvas;
 }
 

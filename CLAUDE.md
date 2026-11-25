@@ -46,3 +46,9 @@ Estudo de portfólio: o README é a vitrine (decisões + números antes/depois).
 - **Só o herói**: sem seções, menu, rodapé nem cards. A página não rola. **Giro livre de 360°** (`can.enableDrag(hero)`, inércia; `state.drag` é aditivo ao tilt e ao giro do GSAP).
 - **Canvas da lata = herói inteiro** (nada é cortado). O `<model-viewer>` precisa de `max-camera-orbit="auto auto 2m"` para a distância da câmera valer (0,4 m desktop, 0,42 m celular).
 - **Fundo em CSS** (`hero.css`: degradê + brilho de chão + `public/img/noise.png`). A imagem de parede que o Erick mandou ficou pixelada e foi descartada. Mesmo CSS do `copos-laser`.
+
+## Temas novos (25/11/2026, pedido do Erick)
+- 4 temas com **rótulos gerados no Magnific** (`assets-src/rotulos/*.png`, versionados; `public/img/rotulo-*.webp`, 1024 px): Silk & Thorn (verde-escuro, heroína-vespa de máscara branca e capa vermelha), Serpent Rage (preto/dourado, espadachim de haori listrado com cobra branca), Blue Bounce (creme e azul, mascote retrô), Neon Coast (synthwave). O Erick pediu **parecidos o máximo possível** com as referências (Hollow Knight Silksong x Guaraná, Demon Slayer x Monster, Berry Loops, Monster Vice City): personagens são fan art de IP alheio, mas **nomes e logos de marca real não são usados** (só nomes fictícios).
+- A arte é **quadrada**; de frente a lata mostra menos que meia volta. Em `textures.js` ela ocupa 96% da altura e 78% da altura em largura, e o resto da volta vem das **bordas da própria arte esticadas** (sem blur: o Erick não quer desfoque).
+- **Gotas de condensação** desenhadas por cima (1700 pequenas + 130 grandes com rastro + névoa fria), camada cacheada por tamanho (igual para todos os temas). Sem o cache e com blur, o TBT do celular passava de 500 ms.
+- Rotulo 2:1 (primeira tentativa) cortava as pontas do texto: não voltar a esse formato.

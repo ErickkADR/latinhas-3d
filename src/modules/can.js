@@ -1,7 +1,7 @@
 // A lata herói: inclina em direção ao cursor, gira na troca de tema e recebe a estampa gerada no canvas.
 import { SETTINGS } from '../config/settings.js';
 import { pointer, idleSway } from './pointer.js';
-import { drawLabel, canvasToBlob } from './textures.js';
+import { drawLabel, canvasToBlob, loadLabelImage } from './textures.js';
 
 export function createCan(el, { src, labelSize, reducedMotion }) {
   const state = { yaw: 0, pitch: 0, roll: 0, spin: 0, drag: 0 }; // drag = giro livre do visitante (graus, sem limite)
@@ -26,6 +26,7 @@ export function createCan(el, { src, labelSize, reducedMotion }) {
     await loaded;
     const cacheable = theme.id !== 'custom';
     if (cacheable && textures.has(theme.id)) return textures.get(theme.id);
+    if (theme.src && !theme.img) theme.img = await loadLabelImage(theme.src);
     canvas = drawLabel(theme, labelSize, cacheable ? undefined : canvas || undefined);
     const blob = await canvasToBlob(canvas, 'image/png');
     const url = URL.createObjectURL(blob);
