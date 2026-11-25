@@ -23,6 +23,7 @@
         <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="3" width="18" height="26" rx="5" fill="currentColor"/><rect x="10" y="8" width="12" height="13" rx="2" fill="var(--bg)"/></svg>
         <span>latinha</span>
       </a>
+      <button class="btn btn--solid header-cta" type="button" data-open-studio>Enviar a minha arte</button>
     </header>
 
     <main id="conteudo">
@@ -59,6 +60,39 @@
 
         <div class="picker" role="radiogroup" aria-label="Tema da lata" data-picker></div>
       </section>
+
+      <aside class="studio" id="estudio" role="dialog" aria-modal="false" aria-labelledby="studio-title" hidden data-studio>
+        <div class="studio-head">
+          <h2 id="studio-title">Sua arte na lata</h2>
+          <button class="icon-btn" type="button" aria-label="Fechar" data-close-studio>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <form class="studio-form" data-studio-form>
+          <div class="field">
+            <label class="btn btn--line upload-btn">
+              <input class="sr-only" type="file" accept=".svg,image/svg+xml,image/png,image/jpeg,image/webp" data-field-file />
+              <span>Enviar a minha arte</span>
+            </label>
+            <p class="field-hint" data-upload-hint>SVG, PNG, JPG ou WebP. Fica no seu navegador, nada é enviado.</p>
+          </div>
+          <div class="upload-tools" data-upload-tools hidden>
+            <canvas class="strip" width="600" height="200" aria-label="Pré-visualização do rótulo planificado, volta inteira (360°)" data-strip></canvas>
+            <p class="field-hint">A faixa mostra a volta inteira da lata, de uma ponta à outra (360°). Ajuste até pegar do jeito que você quer.</p>
+            <label class="field"><span class="field-label">Encaixe na volta</span>
+              <select name="mode" class="select"><option value="repeat">Repetir até fechar a volta</option><option value="stretch">Esticar nos 360°</option><option value="single">Uma vez só, no meio</option></select></label>
+            <label class="range"><span>Tamanho: <output data-out="scale">100</output>%</span><input type="range" name="scale" min="30" max="200" value="100" /></label>
+            <label class="range"><span>Posição vertical: <output data-out="offY">0</output></span><input type="range" name="offY" min="-50" max="50" value="0" /></label>
+            <label class="range"><span>Giro na volta: <output data-out="shift">0</output>°</span><input type="range" name="shift" min="0" max="360" value="0" /></label>
+            <label class="field"><span class="field-label">Cor de fundo (o que não é arte)</span><input type="color" name="bg" value="#111111" class="color" /></label>
+            <button class="btn btn--text" type="button" data-clear-upload>Remover arte</button>
+          </div>
+          <div class="studio-actions">
+            <button class="btn btn--line" type="button" data-download-label disabled>Baixar o rótulo para imprimir</button>
+            <p class="field-hint" data-download-hint>PNG da volta inteira (207 × 136 mm, ~500 dpi), sem as gotas.</p>
+          </div>
+        </form>
+      </aside>
     </main>
 
     <svg class="sr-only" aria-hidden="true" focusable="false">

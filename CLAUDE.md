@@ -64,3 +64,9 @@ Estudo de portfólio: o README é a vitrine (decisões + números antes/depois).
 - Igual ao do `copos-laser`: grade de 2 colunas com a miniatura de cada tema (`public/img/thumb/<id>.webp`, 144 px, gerada por `node scripts/build-thumbs.mjs` a partir de `assets-src/rotulos/<id>.png`), faixa horizontal no celular, nome só em `aria-label`/`title`. Fundo de estúdio em CSS.
 - **Para adicionar um tema:** (1) panorama 2:1 em `assets-src/rotulos/<id>.png`; (2) `public/img/rotulo-<id>.webp` (2048x1024); (3) linha em `config/themes.js`; (4) `node scripts/build-thumbs.mjs`. O menu cresce sozinho (rola quando passa da altura).
 - ElevenLabs só gera áudio: **não gera imagem**. Os rótulos vêm do Magnific (`images_generate`, 135 créditos cada).
+
+## Estúdio "Sua arte" (25/11/2026, pedido do Erick)
+- O visitante envia a imagem (SVG/PNG/JPG/WebP, até 12 MB, fica no navegador) e ajusta para pegar os 360°: **encaixe** (repetir até fechar a volta / esticar nos 360° / uma vez no meio), **tamanho**, **posição vertical**, **giro na volta** e **cor de fundo** (sugerida pela média das bordas da imagem). A faixa planificada no painel mostra a volta inteira, com a emenda nas pontas. Código: `modules/studio.js`, `drawCustom` e `readUpload` em `modules/textures.js`, `CUSTOM_THEME` em `config/themes.js`.
+- A arte vai na faixa do corpo reto (11% do topo, 81,6% da altura do canvas); o resto (pescoço e curva da base) leva a cor de fundo. As gotas de condensação entram por cima na lata, mas **não** no arquivo para imprimir.
+- **Baixar o rótulo**: PNG 4096 × 2688 px (207 × 136 mm, ~500 dpi gravado em `pHYs`, `png-dpi.js`), sem as gotas.
+- Entrada: botão "Enviar a minha arte" no cabeçalho e o quadrado "+" da grade. O tema só vira ativo depois do envio.

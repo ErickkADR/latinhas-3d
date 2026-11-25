@@ -155,11 +155,27 @@ function paintCondensation(ctx, W, H) {
 }
 
 /** Desenha a estampa de um tema: o rótulo panorâmico (imagem 2:1) com a condensação por cima. @returns {HTMLCanvasElement} */
-export function drawLabel(theme, [W, H], canvas = document.createElement('canvas')) {
+// Arte enviada pelo visitante (colorida), encaixada na faixa do corpo reto da lata. O visitante ajusta para pegar os 360° do jeito que quiser:
+//   mode 'repeat' (repete até fechar a volta, sem distorcer) | 'stretch' (estica nos 360°) | 'single' (uma vez, no meio); scale = altura relativa; offY = posição vertical; shift = giro.
+function drawCustom(ctx, c, W, H) {
+  ctx.fillStyle = c.bg; ctx.fillRect(0, 0, W, H);
+  if (!c.source) return;
+  const y0 = H * 0.108, zh = H * 0.816; // faixa do corpo reto (acima e abaixo ficam o pescoço e a curva da base)
+  const aspect = c.source.width / c.source.height;
+  const th = zh * c.scale, y = y0 + (zh - th) / 2 + c.offY * zh;
+  ctx.imageSmoothingQuality = 'high';
+  const draw = (x0, tw) => { for (const dx of [-W, 0, W]) ctx.drawImage(c.source, x0 + dx, y, tw, th); }; // 3 vezes: o que passa de uma borda reaparece na outra
+  if (c.mode === 'stretch') draw(c.shift * W, W);
+  else if (c.mode === 'single') draw((W - th * aspect) / 2 + c.shift * W, th * aspect);
+  else { const n = Math.max(1, Math.round(W / (th * aspect))), tw = W / n; for (let i = 0; i < n; i++) draw(i * tw + c.shift * W, tw); }
+}
+
+export function drawLabel(theme, [W, H], canvas = document.createElement('canvas'), { drops = true } = {}) {
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = '#111'; ctx.fillRect(0, 0, W, H);
-  if (theme.img) {
+  if (theme.custom) drawCustom(ctx, theme.custom, W, H);
+  else if (theme.img) {
     // A arte é um PANORAMA 2:1 que dá a volta inteira da lata (360°): ocupa o canvas todo, de ponta a ponta e de cima a baixo.
     // O centro (de frente) leva o assunto e o texto; as bordas esquerda/direita se encontram nas costas. Como a IA não garante que as duas
     // pontas casem, a faixa da direita é misturada com o início da esquerda (fusão gradual, 7% da largura): a emenda some.
@@ -180,7 +196,7 @@ export function drawLabel(theme, [W, H], canvas = document.createElement('canvas
     t.fillStyle = g; t.fillRect(0, 0, s, H);
     ctx.drawImage(strip, W - s, 0); // sobre o fim da direita, cada vez mais forte até a borda
   }
-  condensation(ctx, W, H);
+  if (drops) condensation(ctx, W, H);
   return canvas;
 }
 
@@ -196,4 +212,21 @@ export async function readImage(file, max = 1600) {
   const out = await createImageBitmap(bmp, { resizeWidth: Math.round(bmp.width * s), resizeHeight: Math.round(bmp.height * s), resizeQuality: 'high' });
   bmp.close();
   return out;
+}
+
+// Lê a imagem enviada (inclusive SVG), reduzida a no máximo 2048 px no lado maior: ninguém precisa de mais numa lata de 2048.
+export async function readUpload(file, max = 2048) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const w0 = img.naturalWidth || 1000, h0 = img.naturalHeight || 500, k = Math.min(1, max / Math.max(w0, h0));
+    const c = Object.assign(document.createElement('canvas'), { width: Math.round(w0 * k), height: Math.round(h0 * k) });
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    // cor de fundo sugerida: média dos pixels das 4 bordas (a arte costuma ter fundo liso)
+    const x = c.getContext('2d'), e = [x.getImageData(0, 0, c.width, 1), x.getImageData(0, c.height - 1, c.width, 1), x.getImageData(0, 0, 1, c.height), x.getImageData(c.width - 1, 0, 1, c.height)];
+    let r = 0, g = 0, b = 0, n = 0;
+    for (const d of e) for (let i = 0; i < d.data.length; i += 16) { if (d.data[i + 3] < 128) continue; r += d.data[i]; g += d.data[i + 1]; b += d.data[i + 2]; n++; }
+    const hex = n ? '#' + [r, g, b].map((v) => Math.round(v / n).toString(16).padStart(2, '0')).join('') : '#111111';
+    return { source: c, name: file.name, bg: hex };
+  } finally { setTimeout(() => URL.revokeObjectURL(url), 5000); }
 }

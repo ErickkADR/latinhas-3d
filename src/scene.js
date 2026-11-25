@@ -11,6 +11,7 @@ import { initPointer, pointer } from './modules/pointer.js';
 import { fontsReady } from './modules/textures.js';
 import { createCan } from './modules/can.js';
 import { createThemeSwitcher } from './modules/theme-switch.js';
+import { initStudio } from './modules/studio.js';
 
 const idle = (fn, timeout = 1500) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout }) : setTimeout(fn, 200));
 
@@ -31,6 +32,7 @@ export async function startScene({ ui, initial }) {
   });
   can.enableDrag(hero);
   const switcher = createThemeSwitcher({ can, reducedMotion });
+  const studio = initStudio({ switcher, can, onSelectCustom: () => ui.setActive('custom') });
 
   // herói fora da tela = loop parado (nada de renderizar 3D que ninguém vê)
   new IntersectionObserver(([e]) => (e.isIntersecting ? resume('offscreen') : pause('offscreen'))).observe(hero);
@@ -54,6 +56,7 @@ export async function startScene({ ui, initial }) {
   return {
     handle(action) {
       if (action.type === 'theme') switcher.go(byId(action.id));
+      if (action.type === 'studio') studio.open(action.trigger);
     },
   };
 }

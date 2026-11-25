@@ -7,3 +7,6 @@
 .brand-mark { width: 26px; height: 26px; }
 .header-cta { min-height: 44px; }
 @media (max-width: 860px) { :root { --header-h: 64px; } .header-cta { min-height: 40px; padding: 0 16px; font-size: 0.92rem; } }
+
+.header-cta { min-height: 44px; white-space: nowrap; }
+@media (max-width: 860px) { .header-cta { font-size: 0.82rem; padding: 0 12px; min-height: 38px; } }

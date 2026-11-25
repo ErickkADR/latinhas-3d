@@ -3,10 +3,10 @@ import { THEMES } from '../config/themes.js';
 
 export function createUI() {
   const picker = document.querySelector('[data-picker]');
-  const options = THEMES.map((t) => ({ id: t.id, label: t.name, thumb: `/img/thumb/${t.id}.webp` }));
+  const options = [...THEMES.map((t) => ({ id: t.id, label: t.name, thumb: `/img/thumb/${t.id}.webp` })), { id: 'custom', label: 'Sua arte', thumb: null }];
   // grade de quadrados com a miniatura de cada tema (nome só para leitor de tela e dica)
   picker.innerHTML = options
-    .map((o, i) => `<button type="button" role="radio" class="pick" data-theme="${o.id}" aria-checked="${i === 0}" aria-label="${o.label}" title="${o.label}" tabindex="${i === 0 ? 0 : -1}"><img src="${o.thumb}" width="72" height="72" alt="" decoding="async" draggable="false" /></button>`)
+    .map((o, i) => `<button type="button" role="radio" class="pick${o.thumb ? '' : ' pick--upload'}" data-theme="${o.id}" aria-checked="${i === 0}" aria-label="${o.label}" title="${o.label}" tabindex="${i === 0 ? 0 : -1}">${o.thumb ? `<img src="${o.thumb}" width="72" height="72" alt="" decoding="async" draggable="false" />` : '<span aria-hidden="true">+</span>'}</button>`)
     .join('');
   const buttons = [...picker.querySelectorAll('.pick')];
 

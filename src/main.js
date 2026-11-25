@@ -11,9 +11,14 @@ const early = [];
 let scene = null;
 const send = (action) => (scene ? scene.handle(action) : early.push(action));
 
-ui.onPick((id) => {
+ui.onPick((id, btn) => {
+  if (id === 'custom') return send({ type: 'studio', trigger: btn }); // "Sua arte" abre o estúdio; só vira ativo depois do envio
   ui.setActive(id);
   send({ type: 'theme', id });
+});
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-open-studio]');
+  if (t && !scene) early.push({ type: 'studio', trigger: t });
 });
 
 function boot() {
