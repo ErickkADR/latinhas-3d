@@ -7,8 +7,15 @@
 
 /* Fundo único dos dois projetos, desenhado por código (sem imagem para pixelar): parede escura com foco de luz,
    brilho de chão e um ladrilho de ruído de 128 px por cima que quebra as faixas do degradê (dithering). */
-/* Fundo SEMPRE preto (pedido do Erick): preto puro, igual ao copos-laser. */
-.hero-bg { position: absolute; inset: 0; z-index: -2; background: #000; }
+/* Fundo de estúdio desenhado por código (sem imagem para pixelar): preto com foco de luz atrás do copo, brilho de chão e um ruído leve que quebra as faixas do degradê. */
+.hero-bg {
+  position: absolute; inset: 0; z-index: -2;
+  background:
+    radial-gradient(ellipse 62% 58% at 50% 46%, #2b2c31 0%, rgba(43, 44, 49, 0) 72%),
+    radial-gradient(ellipse 52% 11% at 50% 90%, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(180deg, #131417 0%, #09090a 70%, #030303 100%);
+}
+.hero-bg::after { content: ''; position: absolute; inset: 0; background: url('/img/noise.png') 0 0 / 128px 128px; opacity: 0.035; }
 
 /* o canvas do copo ocupa o herói inteiro: nenhuma parte do modelo é cortada, em nenhum ângulo do giro */
 .can-stage { position: absolute; inset: 0; z-index: 2; pointer-events: none; transition: transform 0.6s var(--ease-out); }
