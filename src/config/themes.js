@@ -5,6 +5,13 @@ export const THEMES = [
   { id: 'serpent', name: 'Serpent Rage', short: 'Serpent Rage', src: '/img/rotulo-serpent.webp' },
   { id: 'bounce', name: 'Blue Bounce', short: 'Blue Bounce', src: '/img/rotulo-bounce.webp' },
   { id: 'neon', name: 'Neon Coast', short: 'Neon Coast', src: '/img/rotulo-neon.webp' },
+  { id: 'cauldron', name: 'Cauldron Ale', short: 'Cauldron Ale', src: '/img/rotulo-cauldron.webp' },
+  { id: 'juice', name: 'Nexus Juice', short: 'Nexus Juice', src: '/img/rotulo-juice.webp' },
+  { id: 'jungle', name: 'Jungle Nexus', short: 'Jungle Nexus', src: '/img/rotulo-jungle.webp' },
+  { id: 'deep', name: 'Deep Nexus 24', short: 'Deep Nexus 24', src: '/img/rotulo-deep.webp' },
+  { id: 'gorgon', name: 'Gorgon IPA', short: 'Gorgon IPA', src: '/img/rotulo-gorgon.webp' },
+  { id: 'wolves', name: 'Wolves of Nexus', short: 'Wolves of Nexus', src: '/img/rotulo-wolves.webp' },
+  { id: 'viper', name: 'Nexus Viper', short: 'Nexus Viper', src: '/img/rotulo-viper.webp' },
 ];
 
 // Tema "Sua arte": a imagem e os ajustes vêm do estúdio (modules/studio.js).

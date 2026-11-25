@@ -51,7 +51,7 @@ export async function startScene({ ui, initial }) {
   startLoop();
 
   // no ocioso: as estampas dos outros temas, para a troca no pico do giro ser instantânea
-  idle(() => THEMES.filter((t) => t !== first).forEach((t, i) => setTimeout(() => can.textureFor(t), 4000 + 1500 * i)));
+  idle(() => THEMES.filter((t) => t !== first).slice(0, 3).forEach((t, i) => setTimeout(() => can.textureFor(t), 4000 + 1500 * i)));
 
   return {
     handle(action) {

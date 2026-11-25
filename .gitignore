@@ -11,3 +11,6 @@ reports/*.json
 reports/traces/
 referencia-post.png
 .vercel
+
+# referencias de terceiros (arte de designers/marcas): so para inspiracao local, nunca no git
+assets-src/referencias/

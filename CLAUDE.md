@@ -70,3 +70,8 @@ Estudo de portfólio: o README é a vitrine (decisões + números antes/depois).
 - A arte vai na faixa do corpo reto (11% do topo, 81,6% da altura do canvas); o resto (pescoço e curva da base) leva a cor de fundo. As gotas de condensação entram por cima na lata, mas **não** no arquivo para imprimir.
 - **Baixar o rótulo**: PNG 4096 × 2688 px (207 × 136 mm, ~500 dpi gravado em `pHYs`, `png-dpi.js`), sem as gotas.
 - Entrada: botão "Enviar a minha arte" no cabeçalho e o quadrado "+" da grade. O tema só vira ativo depois do envio.
+
+## 11 temas e referências (25/11/2026)
+- Temas novos (Magnific, a partir de referências do Erick, fiéis ao desenho/estilo com nomes trocados e NEXUS): Cauldron Ale, Nexus Juice, Jungle Nexus, Deep Nexus 24, Gorgon IPA, Wolves of Nexus, Nexus Viper (+ os 4 de antes). `assets-src/rotulos/*.png` versionados.
+- As **22 referências originais** estão em `assets-src/referencias/` (fora do git: arte de terceiros). Quais já foram usadas e quais faltam: na memória do projeto (`referencias-rotulos-latinha-pendentes`). Só os 3 primeiros "outros" temas são pré-desenhados no ocioso; o resto é desenhado ao escolher.
+- Regra: o nome Nexus é permitido aqui (projeto pessoal); a proibição vale só para os repos da Bannerjet.
