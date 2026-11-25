@@ -29,16 +29,17 @@
 
 .picker {
   position: absolute; right: var(--gutter); top: 50%; transform: translateY(-50%); z-index: 4;
-  display: flex; flex-direction: column; gap: 6px; align-items: flex-end; cursor: auto; touch-action: pan-x;
-  transition: opacity 0.3s;
+  display: grid; grid-template-columns: repeat(2, 76px); gap: 8px; align-content: start;
+  max-height: min(78svh, 700px); overflow-y: auto; overscroll-behavior: contain; padding: 6px; cursor: auto; touch-action: pan-y;
+  scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.35) transparent; transition: opacity 0.3s;
 }
 .pick {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 4px 18px;
-  border: 2px solid transparent; border-radius: 999px; background: none; cursor: pointer; font-weight: 700;
-  transition: border-color 0.3s, background-color 0.3s;
+  width: 76px; height: 76px; padding: 0; border: 2px solid rgba(255, 255, 255, 0.14); border-radius: 12px; background: #0f1012; overflow: hidden; cursor: pointer;
+  transition: border-color 0.25s, transform 0.25s var(--ease-out);
 }
-.pick:hover { border-color: color-mix(in srgb, var(--ink) 30%, transparent); }
-.pick[aria-checked='true'] { border-color: var(--ink); background: color-mix(in srgb, var(--ink) 8%, transparent); }
+.pick img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pick:hover { border-color: rgba(255, 255, 255, 0.55); transform: scale(1.04); }
+.pick[aria-checked='true'] { border-color: #fff; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25); }
 
 @media (max-width: 860px) {
   .hero-copy { left: var(--gutter); right: var(--gutter); top: calc(var(--header-h) + 8px); transform: none; max-width: none; text-align: center; }
@@ -48,10 +49,10 @@
   .hero-lede { font-size: 0.95rem; margin: 0 auto; }
   .can-stage { transform: translateY(8%); }
   .picker {
-    left: 0; right: 0; top: auto; bottom: 14px; transform: none; flex-direction: row; justify-content: safe center; gap: 4px; flex-wrap: nowrap;
-    overflow-x: auto; padding: 0 var(--gutter); scrollbar-width: none;
+    left: 0; right: 0; top: auto; bottom: 12px; transform: none; display: flex; flex-direction: row; justify-content: safe center; gap: 8px; max-height: none;
+    overflow-x: auto; overflow-y: hidden; padding: 6px var(--gutter); scrollbar-width: none; touch-action: pan-x;
   }
-  .pick { white-space: nowrap; padding: 4px 14px; }
+  .pick { flex: none; width: 58px; height: 58px; }
   n-stage { transform: translateY(-14%); }
   
 }

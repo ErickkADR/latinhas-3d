@@ -59,3 +59,8 @@ Estudo de portfólio: o README é a vitrine (decisões + números antes/depois).
 - As estampas dos outros temas só são pré-desenhadas 4 s depois (1,5 s entre elas) e as gotas têm metade da quantidade no celular: sem isso o TBT do celular passava de 600 ms.
 - **Rótulo cobre o corpo inteiro** (pedido do Erick, 25/11): o corpo é UMA peça torneada (material `Label`) da curva da base até o fim do pescoço, com UV por altura; só o disco/anel de baixo e a borda do topo são `Aluminium`. A textura tem proporção 1,52:1 (`settings.js`: 2048×1344): o panorama fica na faixa do corpo reto (11% acima e 8% abaixo são a linha de borda esticada, em zonas curvas).
 - **Cache de modelo:** `/models/*` é `max-age=0, must-revalidate` e a URL leva `?v=N` (`scene.js` e o preload do `index.html`). Incrementar o `v` ao trocar o `can.glb`.
+
+## Menu lateral de quadrados (25/11/2026)
+- Igual ao do `copos-laser`: grade de 2 colunas com a miniatura de cada tema (`public/img/thumb/<id>.webp`, 144 px, gerada por `node scripts/build-thumbs.mjs` a partir de `assets-src/rotulos/<id>.png`), faixa horizontal no celular, nome só em `aria-label`/`title`. Fundo de estúdio em CSS.
+- **Para adicionar um tema:** (1) panorama 2:1 em `assets-src/rotulos/<id>.png`; (2) `public/img/rotulo-<id>.webp` (2048x1024); (3) linha em `config/themes.js`; (4) `node scripts/build-thumbs.mjs`. O menu cresce sozinho (rola quando passa da altura).
+- ElevenLabs só gera áudio: **não gera imagem**. Os rótulos vêm do Magnific (`images_generate`, 135 créditos cada).

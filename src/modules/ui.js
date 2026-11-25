@@ -3,9 +3,10 @@ import { THEMES } from '../config/themes.js';
 
 export function createUI() {
   const picker = document.querySelector('[data-picker]');
-  const options = THEMES.map((t) => ({ id: t.id, label: t.short }));
+  const options = THEMES.map((t) => ({ id: t.id, label: t.name, thumb: `/img/thumb/${t.id}.webp` }));
+  // grade de quadrados com a miniatura de cada tema (nome só para leitor de tela e dica)
   picker.innerHTML = options
-    .map((o, i) => `<button type="button" role="radio" class="pick" data-theme="${o.id}" aria-checked="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><span class="pick-label">${o.label}</span></button>`)
+    .map((o, i) => `<button type="button" role="radio" class="pick" data-theme="${o.id}" aria-checked="${i === 0}" aria-label="${o.label}" title="${o.label}" tabindex="${i === 0 ? 0 : -1}"><img src="${o.thumb}" width="72" height="72" alt="" decoding="async" draggable="false" /></button>`)
     .join('');
   const buttons = [...picker.querySelectorAll('.pick')];
 
@@ -25,10 +26,10 @@ export function createUI() {
     picker.addEventListener('keydown', (e) => {
       const i = buttons.indexOf(document.activeElement);
       if (i < 0) return;
-      const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      const d = { ArrowRight: 1, ArrowDown: 2, ArrowLeft: -1, ArrowUp: -2 }[e.key];
       if (!d) return;
       e.preventDefault();
-      const b = buttons[(i + d + buttons.length) % buttons.length];
+      const b = buttons[Math.min(buttons.length - 1, Math.max(0, i + d))];
       b.focus();
       fn(b.dataset.theme, b);
     });
