@@ -25,7 +25,7 @@ export async function startScene({ ui, initial }) {
 
   document.querySelector('[data-can]').setAttribute('camera-orbit', `0deg 84deg ${window.innerWidth <= 860 ? '0.42m' : '0.4m'}`);
   const can = createCan(document.querySelector('[data-can]'), {
-    src: `${MODELS_BASE}can.glb`,
+    src: `${MODELS_BASE}can.glb?v=3`,
     labelSize: device === 'mobile' ? SETTINGS.label.mobile : SETTINGS.label.desktop,
     reducedMotion,
   });
