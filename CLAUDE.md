@@ -75,3 +75,6 @@ Estudo de portfólio: o README é a vitrine (decisões + números antes/depois).
 - Temas novos (Magnific, a partir de referências do Erick, fiéis ao desenho/estilo com nomes trocados e NEXUS): Cauldron Ale, Nexus Juice, Jungle Nexus, Deep Nexus 24, Gorgon IPA, Wolves of Nexus, Nexus Viper (+ os 4 de antes). `assets-src/rotulos/*.png` versionados.
 - As **22 referências originais** estão em `assets-src/referencias/` (fora do git: arte de terceiros). Quais já foram usadas e quais faltam: na memória do projeto (`referencias-rotulos-latinha-pendentes`). Só os 3 primeiros "outros" temas são pré-desenhados no ocioso; o resto é desenhado ao escolher.
 - Regra: o nome Nexus é permitido aqui (projeto pessoal); a proibição vale só para os repos da Bannerjet.
+
+## Skills para repetir o trabalho (25/11/2026)
+Skills globais em `~/claude-config/skills/` (viajam entre as máquinas): `modelo-3d-copo-lata` (modelar no Blender via MCP, medir foto, exportar, plugar no site), `rotulo-lata-magnific` (rótulos panorâmicos a partir de referências, upload, conferência, tema + miniatura) e `arte-gravacao-laser-copo` (SVG/PDF/pacote PNG -> máscara, 360°, arquivo da fibra). Invocar a skill antes de refazer qualquer um desses fluxos.
