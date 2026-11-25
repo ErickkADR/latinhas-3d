@@ -9,7 +9,7 @@ export const SETTINGS = {
   // troca de tema
   spin: { degrees: 720, duration: 1.5 },
   // resolução da estampa gerada no canvas
-  label: { desktop: [2048, 1024], mobile: [1024, 512] },
+  label: { desktop: [2048, 1344], mobile: [1024, 672] } // proporção 1,52:1 (volta 207 mm x 136 mm de rótulo, do pé ao fim do pescoço),
 };
 
 export function deviceClass(width = window.innerWidth) {

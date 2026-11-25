@@ -163,12 +163,18 @@ export function drawLabel(theme, [W, H], canvas = document.createElement('canvas
     // A arte é um PANORAMA 2:1 que dá a volta inteira da lata (360°): ocupa o canvas todo, de ponta a ponta e de cima a baixo.
     // O centro (de frente) leva o assunto e o texto; as bordas esquerda/direita se encontram nas costas. Como a IA não garante que as duas
     // pontas casem, a faixa da direita é misturada com o início da esquerda (fusão gradual, 7% da largura): a emenda some.
-    ctx.drawImage(theme.img, 0, 0, W, H);
+    // O canvas agora cobre o corpo inteiro (curva da base + corpo + pescoço). O panorama ocupa a faixa do CORPO reto (proporção correta);
+    // acima (pescoço) e abaixo (curva da base) a arte continua esticando a linha de pixels da borda, em zonas que são curvas de qualquer jeito.
+    const top = Math.round(H * 0.108), bodyH = Math.round(H * 0.816);
+    const iw = theme.img.naturalWidth || theme.img.width, ih = theme.img.naturalHeight || theme.img.height;
+    ctx.drawImage(theme.img, 0, 0, iw, 1, 0, 0, W, top + 1);
+    ctx.drawImage(theme.img, 0, ih - 1, iw, 1, 0, top + bodyH - 1, W, H - (top + bodyH) + 1);
+    ctx.drawImage(theme.img, 0, top, W, bodyH);
     const s = Math.round(W * 0.07);
     const n = theme.img.naturalWidth || theme.img.width, ns = Math.round((n * s) / W);
     const strip = document.createElement('canvas'); strip.width = s; strip.height = H;
     const t = strip.getContext('2d');
-    t.drawImage(theme.img, 0, 0, ns, theme.img.naturalHeight || theme.img.height, 0, 0, s, H); // início da esquerda
+    t.drawImage(theme.img, 0, 0, ns, ih, 0, top, s, bodyH); // início da esquerda
     t.globalCompositeOperation = 'destination-in';
     const g = t.createLinearGradient(0, 0, s, 0); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,1)');
     t.fillStyle = g; t.fillRect(0, 0, s, H);

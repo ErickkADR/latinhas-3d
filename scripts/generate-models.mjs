@@ -91,18 +91,23 @@ async function buildCan() {
   const metalTex = texture(doc, 'brushed', await noisePng(2048, 2048, 96, 70));
   const metal = mat(doc, 'Aluminium', '#b9bfc7', { metal: 1, rough: 1, double: true }).setMetallicRoughnessTexture(metalTex);
 
-  // corpo (área da estampa): thetaStart = PI faz u = 0.5 ficar de frente para a câmera (+Z)
-  // rótulo ALTO (pedido do Erick): as curvas de baixo e de cima mantêm o desenho ORIGINAL (achatá-las deixou a lata feia); a lata inteira fica 18 mm mais alta e o corpo ganha essa altura
-  const YB = 0.0115, YT = 0.1045 + 0.018, H = YT - YB;
-  const body = new THREE.CylinderGeometry(0.033, 0.033, H, SEG, 32, true, Math.PI, Math.PI * 2);
-  addPrimitive(doc, mesh, xform(body, { y: YB + H / 2 }), label);
+  // O RÓTULO cobre o corpo inteiro: da curva de baixo até o fim do pescoço (pedido do Erick: o rótulo preenche tudo, só a borda do topo e o anel da base ficam em metal).
+  // É UMA peça torneada só, com UV por ALTURA (v = 0 na base do rótulo, 1 no fim do pescoço) e u = ângulo (0,5 de frente). A textura tem proporção 1,52:1 (ver settings.js).
+  // As curvas mantêm o desenho original (achatá-las deixou a lata feia); a lata inteira é 18 mm mais alta que a original.
+  const E = 0.018;
+  const lp = [[0.0275, 0.0012], [0.030, 0.0042], [0.0322, 0.0085], [0.033, 0.0115], [0.033, 0.1045 + E], [0.0327, 0.1075 + E], [0.0312, 0.1115 + E], [0.0290, 0.1158 + E], [0.0279, 0.1192 + E]];
+  const ylo = lp[0][1], yhi = lp[lp.length - 1][1];
+  const labelGeo = new THREE.LatheGeometry(v2(lp), SEG);
+  const lpos = labelGeo.getAttribute('position'), luv = labelGeo.getAttribute('uv');
+  for (let i = 0; i < lpos.count; i++) luv.setY(i, (lpos.getY(i) - ylo) / (yhi - ylo)); // v por altura (o torno usa índice do ponto)
+  // a costura do torno nasce em +Z (de frente para a câmera): girar 180° manda ela para as costas e deixa u = 0,5 de frente
+  addPrimitive(doc, mesh, xform(labelGeo, { ry: Math.PI }), label);
 
-  const bottom = new THREE.LatheGeometry(v2([[0, 0.0045], [0.012, 0.0035], [0.019, 0.0016], [0.0225, 0.0002], [0.025, 0], [0.0275, 0.0012], [0.030, 0.0042], [0.0322, 0.0085], [0.033, 0.0115]]), SEG);
-  // a costura do torno nasce em +Z (de frente para a câmera): girar 180° manda ela para as costas
+  // fundo (disco e anel de apoio) e borda do topo, em alumínio
+  const bottom = new THREE.LatheGeometry(v2([[0, 0.0045], [0.012, 0.0035], [0.019, 0.0016], [0.0225, 0.0002], [0.025, 0], [0.0275, 0.0012]]), SEG);
   addPrimitive(doc, mesh, xform(bottom, { ry: Math.PI }), metal);
-
-  const top = new THREE.LatheGeometry(v2([[0.033, 0.1225], [0.0327, 0.1255], [0.0312, 0.1295], [0.0290, 0.1338], [0.0279, 0.1372], [0.0278, 0.1392], [0.0284, 0.1406], [0.0280, 0.1416], [0.0270, 0.1412], [0.0264, 0.1395], [0.0259, 0.1368], [0.0250, 0.1358], [0.0, 0.1356]]), SEG);
-  addPrimitive(doc, mesh, xform(top, { ry: Math.PI }), metal);
+  const rim = [[0.0279, 0.1192], [0.0278, 0.1212], [0.0284, 0.1226], [0.0280, 0.1236], [0.0270, 0.1232], [0.0264, 0.1215], [0.0259, 0.1188], [0.0250, 0.1178], [0.0, 0.1176]].map(([x, y]) => [x, y + E]);
+  addPrimitive(doc, mesh, xform(new THREE.LatheGeometry(v2(rim), SEG), { ry: Math.PI }), metal);
 
   // anel (lacre): retângulo arredondado com furo, deitado na tampa
   const tab = new THREE.Shape();
