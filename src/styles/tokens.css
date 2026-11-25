@@ -18,7 +18,7 @@
 
 :root {
   /* fundo fixo: o mesmo preto nos dois projetos (copos e latinhas) */
-  --bg: #0a0a0b;
+  --bg: #000;
   --ink: #f4f4f5;
   /* seções abaixo do herói */
   --paper: #f6f1e7;
