@@ -148,28 +148,31 @@ function paintCondensation(ctx, W, H) {
     ctx.beginPath(); ctx.ellipse(x - rx * 0.38, y - ry * 0.42, rx * 0.26, ry * 0.2, -0.5, 0, Math.PI * 2); ctx.fill();
   };
   const k = (W / 2048) * 1.8;
-  for (let i = 0; i < 1700; i++) drop(r() * W, r() * H, (1.6 + r() * r() * 5) * k, 0);
-  for (let i = 0; i < 130; i++) drop(r() * W, r() * H, (6 + r() * 7) * k, r() > 0.55 ? (30 + r() * 110) * k : 0);
+  const many = W > 1500; // celular (1024 px): metade das gotas
+  for (let i = 0; i < (many ? 1700 : 800); i++) drop(r() * W, r() * H, (1.6 + r() * r() * 5) * k, 0);
+  for (let i = 0; i < (many ? 130 : 70); i++) drop(r() * W, r() * H, (6 + r() * 7) * k, r() > 0.55 ? (30 + r() * 110) * k : 0);
   ctx.restore();
 }
 
-/** Desenha a estampa de um tema: o rótulo original (imagem 2:1) com a condensação por cima. @returns {HTMLCanvasElement} */
+/** Desenha a estampa de um tema: o rótulo panorâmico (imagem 2:1) com a condensação por cima. @returns {HTMLCanvasElement} */
 export function drawLabel(theme, [W, H], canvas = document.createElement('canvas')) {
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = '#111'; ctx.fillRect(0, 0, W, H);
   if (theme.img) {
-    // A arte é QUADRADA e fica de frente, ocupando quase a altura toda do rótulo (de frente a lata mostra menos que meia volta, então ela é
-    // um pouco mais estreita que alta). Laterais, costas, topo e base continuam a partir das bordas da própria arte (colunas/linhas de pixels
-    // esticadas), sem desfoque e sem emenda.
-    const im = theme.img, n = im.naturalWidth || im.width;
-    const sh = H * 0.96, sw = H * 0.78; // altura e largura da arte na lata
-    const x = (W - sw) / 2, y = (H - sh) / 2;
-    ctx.drawImage(im, 0, 0, 1, n, 0, 0, x + 1, H); // borda esquerda -> até o canto esquerdo
-    ctx.drawImage(im, n - 1, 0, 1, n, x + sw - 1, 0, W - (x + sw) + 1, H); // borda direita -> até o canto direito
-    ctx.drawImage(im, 0, 0, n, 1, x, 0, sw, y + 1); // linha de cima
-    ctx.drawImage(im, 0, n - 1, n, 1, x, y + sh - 1, sw, H - (y + sh) + 1); // linha de baixo
-    ctx.drawImage(im, x, y, sw, sh);
+    // A arte é um PANORAMA 2:1 que dá a volta inteira da lata (360°): ocupa o canvas todo, de ponta a ponta e de cima a baixo.
+    // O centro (de frente) leva o assunto e o texto; as bordas esquerda/direita se encontram nas costas. Como a IA não garante que as duas
+    // pontas casem, a faixa da direita é misturada com o início da esquerda (fusão gradual, 7% da largura): a emenda some.
+    ctx.drawImage(theme.img, 0, 0, W, H);
+    const s = Math.round(W * 0.07);
+    const n = theme.img.naturalWidth || theme.img.width, ns = Math.round((n * s) / W);
+    const strip = document.createElement('canvas'); strip.width = s; strip.height = H;
+    const t = strip.getContext('2d');
+    t.drawImage(theme.img, 0, 0, ns, theme.img.naturalHeight || theme.img.height, 0, 0, s, H); // início da esquerda
+    t.globalCompositeOperation = 'destination-in';
+    const g = t.createLinearGradient(0, 0, s, 0); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,1)');
+    t.fillStyle = g; t.fillRect(0, 0, s, H);
+    ctx.drawImage(strip, W - s, 0); // sobre o fim da direita, cada vez mais forte até a borda
   }
   condensation(ctx, W, H);
   return canvas;

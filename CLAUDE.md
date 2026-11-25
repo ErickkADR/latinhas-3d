@@ -52,3 +52,8 @@ Estudo de portfólio: o README é a vitrine (decisões + números antes/depois).
 - A arte é **quadrada**; de frente a lata mostra menos que meia volta. Em `textures.js` ela ocupa 96% da altura e 78% da altura em largura, e o resto da volta vem das **bordas da própria arte esticadas** (sem blur: o Erick não quer desfoque).
 - **Gotas de condensação** desenhadas por cima (1700 pequenas + 130 grandes com rastro + névoa fria), camada cacheada por tamanho (igual para todos os temas). Sem o cache e com blur, o TBT do celular passava de 500 ms.
 - Rotulo 2:1 (primeira tentativa) cortava as pontas do texto: não voltar a esse formato.
+
+## Rótulo panorâmico 360° e alto (25/11/2026, pedido do Erick)
+- Os rótulos agora são **panoramas 2:1** (Magnific) que dão a volta inteira; assunto e texto no centro, laterais e costas continuam o cenário. Em `textures.js` a imagem ocupa o canvas todo e a faixa da direita (7%) é misturada com o início da esquerda para sumir a emenda das costas. Nada de blur, nada de arte quadrada com bordas esticadas.
+- **Rótulo mais alto**: `generate-models.mjs` tem o corpo de 0,00575 a 0,1175 m e as curvas de baixo (x0,5) e de cima (x0,3) achatadas, ficando quase no relevo do topo. Mudou o gerador? `node scripts/generate-models.mjs && node scripts/optimize-models.mjs`.
+- As estampas dos outros temas só são pré-desenhadas 4 s depois (1,5 s entre elas) e as gotas têm metade da quantidade no celular: sem isso o TBT do celular passava de 600 ms.

@@ -92,14 +92,16 @@ async function buildCan() {
   const metal = mat(doc, 'Aluminium', '#b9bfc7', { metal: 1, rough: 1, double: true }).setMetallicRoughnessTexture(metalTex);
 
   // corpo (área da estampa): thetaStart = PI faz u = 0.5 ficar de frente para a câmera (+Z)
-  const body = new THREE.CylinderGeometry(0.033, 0.033, 0.093, SEG, 32, true, Math.PI, Math.PI * 2);
-  addPrimitive(doc, mesh, xform(body, { y: 0.0115 + 0.0465 }), label);
+  // rótulo ALTO (pedido do Erick): as curvas de baixo e de cima ficam com metade da altura original, o corpo ganha ~15% de altura
+  const YB = 0.00575, YT = 0.1175, H = YT - YB;
+  const body = new THREE.CylinderGeometry(0.033, 0.033, H, SEG, 32, true, Math.PI, Math.PI * 2);
+  addPrimitive(doc, mesh, xform(body, { y: YB + H / 2 }), label);
 
-  const bottom = new THREE.LatheGeometry(v2([[0, 0.0045], [0.012, 0.0035], [0.019, 0.0016], [0.0225, 0.0002], [0.025, 0], [0.0275, 0.0012], [0.030, 0.0042], [0.0322, 0.0085], [0.033, 0.0115]]), SEG);
+  const bottom = new THREE.LatheGeometry(v2([[0, 0.00225], [0.012, 0.00175], [0.019, 0.0008], [0.0225, 0.0001], [0.025, 0.0], [0.0275, 0.0006], [0.030, 0.0021], [0.0322, 0.00425], [0.033, 0.00575]]), SEG);
   // a costura do torno nasce em +Z (de frente para a câmera): girar 180° manda ela para as costas
   addPrimitive(doc, mesh, xform(bottom, { ry: Math.PI }), metal);
 
-  const top = new THREE.LatheGeometry(v2([[0.033, 0.1045], [0.0327, 0.1075], [0.0312, 0.1115], [0.0290, 0.1158], [0.0279, 0.1192], [0.0278, 0.1212], [0.0284, 0.1226], [0.0280, 0.1236], [0.0270, 0.1232], [0.0264, 0.1215], [0.0259, 0.1188], [0.0250, 0.1178], [0.0, 0.1176]]), SEG);
+  const top = new THREE.LatheGeometry(v2([[0.033, 0.1175], [0.0327, 0.1184], [0.0312, 0.1196], [0.0290, 0.12089], [0.0279, 0.12191], [0.0278, 0.12251], [0.0284, 0.12293], [0.0280, 0.12323], [0.0270, 0.12311], [0.0264, 0.1226], [0.0259, 0.12179], [0.0250, 0.12149], [0.0, 0.12143]]), SEG);
   addPrimitive(doc, mesh, xform(top, { ry: Math.PI }), metal);
 
   // anel (lacre): retângulo arredondado com furo, deitado na tampa
@@ -110,8 +112,8 @@ async function buildCan() {
   const hole = new THREE.Path(); hole.absellipse(0.0035, 0, 0.0042, 0.0034, 0, Math.PI * 2, true);
   tab.holes.push(hole);
   const tabGeo = new THREE.ExtrudeGeometry(tab, { depth: 0.0005, bevelEnabled: true, bevelThickness: 0.0002, bevelSize: 0.0002, bevelSegments: 4, curveSegments: 64 });
-  addPrimitive(doc, mesh, xform(tabGeo, { rx: -Math.PI / 2, y: 0.1182, z: 0.004, ry: Math.PI / 2 }), metal);
-  addPrimitive(doc, mesh, xform(new THREE.CylinderGeometry(0.0016, 0.0018, 0.0012, 64), { y: 0.118 }), metal);
+  addPrimitive(doc, mesh, xform(tabGeo, { rx: -Math.PI / 2, y: 0.1222, z: 0.004, ry: Math.PI / 2 }), metal);
+  addPrimitive(doc, mesh, xform(new THREE.CylinderGeometry(0.0016, 0.0018, 0.0012, 64), { y: 0.12215 }), metal);
   return doc;
 }
 
