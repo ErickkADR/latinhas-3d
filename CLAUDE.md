@@ -55,5 +55,5 @@ Estudo de portfólio: o README é a vitrine (decisões + números antes/depois).
 
 ## Rótulo panorâmico 360° e alto (25/11/2026, pedido do Erick)
 - Os rótulos agora são **panoramas 2:1** (Magnific) que dão a volta inteira; assunto e texto no centro, laterais e costas continuam o cenário. Em `textures.js` a imagem ocupa o canvas todo e a faixa da direita (7%) é misturada com o início da esquerda para sumir a emenda das costas. Nada de blur, nada de arte quadrada com bordas esticadas.
-- **Rótulo mais alto**: `generate-models.mjs` tem o corpo de 0,00575 a 0,1175 m e as curvas de baixo (x0,5) e de cima (x0,3) achatadas, ficando quase no relevo do topo. Mudou o gerador? `node scripts/generate-models.mjs && node scripts/optimize-models.mjs`.
+- **Rótulo mais alto**: a lata é 18 mm mais alta (`EXTRA` em `generate-models.mjs`): o corpo cresce e as curvas de baixo e de cima mantêm o desenho ORIGINAL. **Nunca achatar as curvas** (a primeira tentativa deixou a lata baixa e feia, o Erick reclamou). Mudou o gerador? `node scripts/generate-models.mjs && node scripts/optimize-models.mjs`.
 - As estampas dos outros temas só são pré-desenhadas 4 s depois (1,5 s entre elas) e as gotas têm metade da quantidade no celular: sem isso o TBT do celular passava de 600 ms.
